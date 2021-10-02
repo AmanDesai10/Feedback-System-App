@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:feedsys/Screens/homeScreen.dart';
-import 'package:feedsys/Screens/signupscreen.dart';
+import 'package:feedsys/Screens/home/homeScreen.dart';
+import 'package:feedsys/Screens/signup/signupscreen.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/components/validators.dart';
 import 'package:feedsys/constants/colors.dart';

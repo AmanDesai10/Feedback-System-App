@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:feedsys/Screens/categoryselection.dart';
-import 'package:feedsys/Screens/homeScreen.dart';
-import 'package:feedsys/Screens/signupscreen.dart';
-import 'package:feedsys/Screens/verification.dart';
+import 'package:feedsys/Screens/signup/UserDetails/user_detail_screen.dart';
+import 'package:feedsys/Screens/home/homeScreen.dart';
+import 'package:feedsys/Screens/signup/UserDetails/userdetail_view.dart';
+import 'package:feedsys/Screens/signup/signupscreen.dart';
+import 'package:feedsys/Screens/signup/verification.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/components/validators.dart';
 import 'package:feedsys/constants/colors.dart';
@@ -36,22 +37,35 @@ class _LoginScreenState extends State<LoginScreen> {
         // color: MediaQuery.of(context).viewInsets.bottom > 0.0
         //     ? Color(0xff4A5CFF)
         //     : Colors.white,
-        child: Stack(children: [
-          Transform.translate(
-            offset: Offset(0, -15),
-            child: Align(
-              alignment: Alignment.topCenter,
+        child: Stack(alignment: Alignment.topCenter, children: [
+          // Transform.translate(
+          //   offset: Offset(0, -15),
+          //   child: Align(
+          //     alignment: Alignment.topCenter,
+          //     child: Container(
+          //       child: Image.asset(
+          //         'images/login_bg.png',
+          //         fit: BoxFit.fitWidth,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ClipPath(
               child: Container(
-                child: Image.asset('images/login_bg.png'),
+                width: size.width,
+                height: size.height * 0.75,
+                color: kPrimary,
               ),
+              clipper: CustomClipPath(),
             ),
           ),
           Positioned(
-            // alignment: Alignment.center,
             top: size.height * 0.2,
             child: Container(
               height: size.height * 0.6,
-              width: size.width - 50,
+              width: size.width - 50 > 450 ? 450 : size.width - 50,
               margin: EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
@@ -268,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CategorySelection()));
+                            builder: (context) => UserDetailView()));
                   },
                 ))
               ]),
@@ -278,4 +292,21 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 100);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height - 100);
+    path.lineTo(size.width, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
