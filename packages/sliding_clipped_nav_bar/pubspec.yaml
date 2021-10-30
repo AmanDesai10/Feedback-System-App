@@ -1,0 +1,19 @@
+name: sliding_clipped_nav_bar
+description: Bottom Navigation Bar with sliding menu icon and text with clipping effect, also ripple effect when tapped.
+
+version: 1.0.3
+repository: https://github.com/watery-desert/sliding_clipped_nav_bar
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true

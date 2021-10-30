@@ -240,9 +240,12 @@ class _DesktopDetailSelectionState extends State<DesktopDetailSelection> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignupScreen(
-                                        role: _instituteData
-                                            .categoryList[selectedIndex]
-                                            .toLowerCase())));
+                                          role: _instituteData
+                                              .categoryList[selectedIndex]
+                                              .toLowerCase(),
+                                          institute: userCollege!,
+                                          department: dept!,
+                                        )));
                           }
                         : null,
                     child: Container(

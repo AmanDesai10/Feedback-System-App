@@ -4,11 +4,10 @@ import 'package:feedsys/Screens/signup/UserDetails/userdetail_view.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WelcomeScreen extends ConsumerWidget {
+class WelcomeScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
     return SafeArea(

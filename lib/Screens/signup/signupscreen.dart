@@ -14,8 +14,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feedsys/utils/device_info.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key, required this.role}) : super(key: key);
+  const SignupScreen(
+      {Key? key,
+      required this.role,
+      required this.institute,
+      required this.department})
+      : super(key: key);
   final String role;
+  final String institute;
+  final String department;
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -207,7 +214,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       'email': email,
                                                       'password': password,
                                                       'userName': name,
-                                                      'role': widget.role
+                                                      'role': widget.role,
+                                                      "institute":
+                                                          widget.institute,
+                                                      "department":
+                                                          widget.department
                                                     }));
                                                 setState(() {
                                                   load = false;

@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:feedsys/Screens/home/forward_category.dart';
 import 'package:feedsys/Screens/home/homeScreen.dart';
-import 'package:feedsys/Screens/signup/signupscreen.dart';
-import 'package:feedsys/components/textfileds.dart';
-import 'package:feedsys/components/validators.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +24,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController otpController = TextEditingController();
-  late final StreamController<ErrorAnimationType>? errorController;
+  final StreamController<ErrorAnimationType>? errorController =
+      StreamController<ErrorAnimationType>();
 
   int starttimer = 30;
   late Timer time;
@@ -43,11 +42,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
         setState(() {});
       }
     });
-  }
-
-  void initState() {
-    super.initState();
-    errorController = StreamController<ErrorAnimationType>();
   }
 
   void dispose() {
@@ -85,7 +79,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               alignment: Alignment.center,
               child: Container(
                 height: size.height * 0.58,
-                width: size.width - 50,
+                width: size.width - 50 > 450 ? 450 : size.width - 50,
                 margin: EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
@@ -247,13 +241,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           log(response.statusCode.toString());
                                           log(response.body);
                                           if (response.statusCode == 200) {
-                                            Navigator.push(
+                                            Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        HomeScreen(
-                                                          role: widget.role,
-                                                        )));
+                                                        CategoryForwarding(
+                                                            widget.role)),
+                                                (route) => false);
                                           } else if (response.statusCode ==
                                               401) {
                                             errorController!

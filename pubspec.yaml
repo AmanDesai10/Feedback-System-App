@@ -1,6 +1,6 @@
 name: feedsys
 description: A new Flutter project.
-
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -10,19 +10,22 @@ dependencies:
   flutter:
     sdk: flutter
 
+  sliding_clipped_nav_bar:
+    path: packages/sliding_clipped_nav_bar
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_svg: ^0.22.0
-  universal_platform: ^1.0.0+1
-  smooth_page_indicator: ^1.0.0+2
-  flutter_riverpod: ^0.14.0+3
+  universal_platform: ^1.0.0+1    
   animate_do: ^2.0.0
   form_field_validator: ^1.1.0
   pin_code_fields: ^7.3.0
   http: ^0.13.3
   wave: ^0.2.0
+  carousel_slider: ^4.0.0
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:

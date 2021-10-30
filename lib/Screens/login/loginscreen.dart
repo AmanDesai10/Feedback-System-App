@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:feedsys/Screens/home/forward_category.dart';
 import 'package:feedsys/Screens/signup/UserDetails/user_detail_screen.dart';
 import 'package:feedsys/Screens/home/homeScreen.dart';
 import 'package:feedsys/Screens/signup/UserDetails/userdetail_view.dart';
@@ -11,6 +12,7 @@ import 'package:feedsys/components/validators.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,7 +23,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-
   String? email;
   String? password;
   bool isObscure = true;
@@ -193,12 +194,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   });
                                   if (response.statusCode == 200) {
                                     log(response.body);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomeScreen(
-                                                role: jsonDecode(
-                                                    response.body)['role'])));
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString('email',
+                                        jsonDecode(response.body)['email']);
+                                    prefs.setString('name',
+                                        jsonDecode(response.body)['userName']);
+                                    prefs.setString('role',
+                                        jsonDecode(response.body)['role']);
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CategoryForwarding(jsonDecode(
+                                                  response.body)['role'])),
+                                      (route) => false,
+                                    );
                                   } else if (response.statusCode == 401) {
                                     Navigator.push(
                                         context,
