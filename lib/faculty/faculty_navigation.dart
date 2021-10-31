@@ -2,6 +2,7 @@ import 'package:feedsys/Screens/student/student_feedbackscreen.dart';
 import 'package:feedsys/Screens/student/student_homescreen.dart';
 import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/faculty/faculty_analytics_tabview.dart';
 import 'package:feedsys/faculty/faculty_homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
@@ -21,8 +22,8 @@ class _FacultyNavigationState extends State<FacultyNavigation> {
     final Size size = MediaQuery.of(context).size;
     final ThemeData theme = Theme.of(context);
 
-    List pages = [FacultyHomeScreen(), StudentFeedbackScreen(), ProfilePage()];
-    List pageTitle = ['Home', 'Feedbacks', 'Profile'];
+    List pages = [FacultyHomeScreen(), ProfilePage()];
+    List pageTitle = ['Home', 'Profile'];
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -43,10 +44,6 @@ class _FacultyNavigationState extends State<FacultyNavigation> {
             BarItem(
               icon: Icons.home,
               title: 'Home',
-            ),
-            BarItem(
-              icon: Icons.feedback_outlined,
-              title: 'Feedback',
             ),
             BarItem(
               icon: Icons.person_outline,

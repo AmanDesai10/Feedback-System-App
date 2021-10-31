@@ -26,6 +26,7 @@ dependencies:
   wave: ^0.2.0
   carousel_slider: ^4.0.0
   shared_preferences: ^2.0.8
+  syncfusion_flutter_charts: ^19.3.47
 
 dev_dependencies:
   flutter_test:
