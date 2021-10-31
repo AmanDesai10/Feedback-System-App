@@ -1,6 +1,7 @@
 import 'package:feedsys/Screens/welcome.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.role}) : super(key: key);
@@ -31,7 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
+                SharedPreferences preferences =
+                    await SharedPreferences.getInstance();
+                preferences.remove("_id");
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => WelcomeScreen()),

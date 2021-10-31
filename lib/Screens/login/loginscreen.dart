@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:feedsys/Screens/home/forward_category.dart';
-import 'package:feedsys/Screens/signup/UserDetails/user_detail_screen.dart';
 import 'package:feedsys/Screens/home/homeScreen.dart';
-import 'package:feedsys/Screens/signup/UserDetails/userdetail_view.dart';
+import 'package:feedsys/Screens/signup/UserDetails/view/userdetail_view.dart';
 import 'package:feedsys/Screens/signup/signupscreen.dart';
 import 'package:feedsys/Screens/signup/verification.dart';
 import 'package:feedsys/components/textfileds.dart';
@@ -26,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? email;
   String? password;
   bool isObscure = true;
-  bool? isRemember = false;
+  bool isRemember = false;
   bool load = false;
   @override
   Widget build(BuildContext context) {
@@ -151,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         MaterialTapTargetSize.shrinkWrap,
                                     value: isRemember,
                                     onChanged: (check) {
-                                      isRemember = check;
+                                      isRemember = check!;
                                       setState(() {});
                                     },
                                   ),
@@ -196,12 +195,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     log(response.body);
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
-                                    prefs.setString('email',
-                                        jsonDecode(response.body)['email']);
+                                    if (isRemember) {
+                                      prefs.setString('_id',
+                                          jsonDecode(response.body)['_id']);
+                                    }
                                     prefs.setString('name',
                                         jsonDecode(response.body)['userName']);
-                                    prefs.setString('role',
-                                        jsonDecode(response.body)['role']);
+                                    prefs.setString('institute',
+                                        jsonDecode(response.body)['institute']);
+                                    prefs.setString(
+                                        'department',
+                                        jsonDecode(
+                                            response.body)['department']);
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(

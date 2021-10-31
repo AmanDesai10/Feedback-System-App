@@ -18,11 +18,15 @@ class SignupScreen extends StatefulWidget {
       {Key? key,
       required this.role,
       required this.institute,
-      required this.department})
+      required this.department,
+      this.sem,
+      this.year})
       : super(key: key);
   final String role;
   final String institute;
   final String department;
+  final int? sem;
+  final int? year;
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -30,7 +34,6 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-
   String? name;
   String? email;
   String? password;
@@ -40,6 +43,8 @@ class _SignupScreenState extends State<SignupScreen> {
   bool load = false;
   @override
   Widget build(BuildContext context) {
+    print(widget.sem);
+    print(widget.year);
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
     final bool isDesktop = DeviceScreen.isDesktop(context);
@@ -203,6 +208,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 log(name!);
                                                 log(password!);
                                                 log(widget.role);
+                                                log(widget.year.toString());
+                                                log(widget.sem.toString());
                                                 var response = await http.post(
                                                     Uri.parse(
                                                         "https://sgp-feedback-system.herokuapp.com/api/signUp"),
@@ -210,16 +217,32 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       'Content-Type':
                                                           'application/json'
                                                     },
-                                                    body: jsonEncode({
-                                                      'email': email,
-                                                      'password': password,
-                                                      'userName': name,
-                                                      'role': widget.role,
-                                                      "institute":
-                                                          widget.institute,
-                                                      "department":
-                                                          widget.department
-                                                    }));
+                                                    body: widget.role !=
+                                                            'student'
+                                                        ? jsonEncode({
+                                                            'email': email,
+                                                            'password':
+                                                                password,
+                                                            'userName': name,
+                                                            'role': widget.role,
+                                                            "institute": widget
+                                                                .institute,
+                                                            "department": widget
+                                                                .department,
+                                                          })
+                                                        : jsonEncode({
+                                                            'email': email,
+                                                            'password':
+                                                                password,
+                                                            'userName': name,
+                                                            'role': widget.role,
+                                                            "institute": widget
+                                                                .institute,
+                                                            "department": widget
+                                                                .department,
+                                                            "sem": widget.sem,
+                                                            "year": widget.year
+                                                          }));
                                                 setState(() {
                                                   load = false;
                                                 });

@@ -52,30 +52,3 @@ class AuthTextField extends StatelessWidget {
     );
   }
 }
-
-class ReadOnlyTextField extends StatelessWidget {
-  const ReadOnlyTextField({
-    Key? key,
-    required this.value,
-  }) : super(key: key);
-  final String value;
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return TextFormField(
-      readOnly: true,
-      initialValue: value,
-      style: theme.textTheme.headline6!.copyWith(fontSize: 18),
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(color: Colors.grey.shade400)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(color: Colors.grey)),
-        contentPadding: EdgeInsets.all(16.0).copyWith(right: 16 * 1.4 * 2),
-      ),
-    );
-  }
-}

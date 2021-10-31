@@ -1,6 +1,5 @@
-import 'package:feedsys/Screens/signup/UserDetails/user_detail_screen.dart';
 import 'package:feedsys/Screens/login/loginscreen.dart';
-import 'package:feedsys/Screens/signup/UserDetails/userdetail_view.dart';
+import 'package:feedsys/Screens/signup/UserDetails/view/userdetail_view.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

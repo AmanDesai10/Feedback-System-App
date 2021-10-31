@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({Key? key}) : super(key: key);
@@ -10,84 +11,99 @@ class StudentHomeScreen extends StatefulWidget {
 }
 
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
+  String? username = 'Guest';
+  void getUserDetail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('name');
+    });
+  }
+
+  @override
+  void initState() {
+    getUserDetail();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final ThemeData theme = Theme.of(context);
+
     return Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            'Hey Aman,',
-            style: theme.textTheme.headline5!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 32,
-          ),
-          CarouselSlider(
-            items: [
-              //1st Image of Slider
-              Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://media.istockphoto.com/photos/-picture-id1277188775?k=20&m=1277188775&s=170667a&w=0&h=O9Y_AQWu-0FwPFkTTHTYNn4Hj_qjTztm7k_-4dtO3Fs="),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-
-              //2nd Image of Slider
-              Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.freepik.com/free-vector/customer-feedback-assessment-illustration_74855-5480.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-
-              //3rd Image of Slider
-              Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://www.commbox.io/wp-content/uploads/2019/10/48-1-1024x600.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-
-            //Slider Container properties
-            options: CarouselOptions(
-              height: 180.0,
-              enlargeCenterPage: true,
-              autoPlay: true,
-              aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              'Hey $username,',
+              style: theme.textTheme.headline5!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-          ),
-          SizedBox(
-            height: 48,
-          ),
-          Text('Counselor Info', style: theme.textTheme.headline6),
-          SizedBox(
-            height: 16,
-          ),
-          CounselorInfoCard()
-        ]));
+            SizedBox(
+              height: 32,
+            ),
+            CarouselSlider(
+              items: [
+                //1st Image of Slider
+                Container(
+                  margin: EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "https://media.istockphoto.com/photos/-picture-id1277188775?k=20&m=1277188775&s=170667a&w=0&h=O9Y_AQWu-0FwPFkTTHTYNn4Hj_qjTztm7k_-4dtO3Fs="),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                //2nd Image of Slider
+                Container(
+                  margin: EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "https://image.freepik.com/free-vector/customer-feedback-assessment-illustration_74855-5480.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                //3rd Image of Slider
+                Container(
+                  margin: EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "https://www.commbox.io/wp-content/uploads/2019/10/48-1-1024x600.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ],
+
+              //Slider Container properties
+              options: CarouselOptions(
+                height: 180.0,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+            ),
+            SizedBox(
+              height: 48,
+            ),
+            Text('Counselor Info', style: theme.textTheme.headline6),
+            CounselorInfoCard()
+          ]),
+        ));
   }
 }
 

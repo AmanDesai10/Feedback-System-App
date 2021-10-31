@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:feedsys/Screens/signup/UserDetails/data/institute_details.dart';
-import 'package:feedsys/Screens/signup/UserDetails/desktop_user_details.dart';
+import 'package:feedsys/Screens/signup/UserDetails/view/desktop_user_details.dart';
+
 import 'package:feedsys/Screens/signup/signupscreen.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,12 @@ class CategorySelection extends StatefulWidget {
 class _CategorySelectionState extends State<CategorySelection> {
   final InstituteData _instituteData = InstituteData();
   List<String> departmentList = [];
+  List<int> yearList = [2016, 2017, 2018, 2019, 2020, 2021];
+  List<int> semList = [1, 2, 3, 4, 5, 6, 7, 8];
   String? userCollege;
   String? dept;
+  int? year;
+  int? sem;
   int selectedIndex = -1;
   int pageIndex = 0;
   @override
@@ -135,7 +140,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                         ),
                         Center(
                             child: Container(
-                          height: size.height * 0.45,
+                          height: size.height * 0.5,
                           width: size.width,
                           child: SingleChildScrollView(
                               child: Column(
@@ -249,6 +254,147 @@ class _CategorySelectionState extends State<CategorySelection> {
                                   ),
                                 ),
                               ),
+                              if (_instituteData.categoryList[selectedIndex]
+                                      .toLowerCase() ==
+                                  'student') ...[
+                                SizedBox(height: 16.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        UserDetailTitle(
+                                          title: 'Year',
+                                        ),
+                                        SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 14.0, vertical: 4.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                              border: Border.all(
+                                                  color: Colors.grey)),
+                                          child: d.DropdownButtonHideUnderline(
+                                            child: d.DropdownButton<int>(
+                                              menuMaxHeight: 175,
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                bottom: Radius.circular(12),
+                                              ),
+                                              dropdownColor: kBackgroundColor,
+                                              focusColor: Colors.white,
+                                              value: year,
+                                              icon: Icon(
+                                                  Icons.expand_more_outlined),
+                                              style: theme.textTheme.headline6!
+                                                  .copyWith(fontSize: 16.0),
+                                              iconEnabledColor: Colors.black,
+                                              items: yearList
+                                                  .map<d.DropdownMenuItem<int>>(
+                                                      (int value) {
+                                                return d.DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value.toString(),
+                                                    style: theme
+                                                        .textTheme.headline6!
+                                                        .copyWith(
+                                                            fontSize: 16.0),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              hint: Text(
+                                                "Select Year",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  year = value!;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        UserDetailTitle(
+                                          title: 'Semester',
+                                        ),
+                                        SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 14.0, vertical: 4.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                              border: Border.all(
+                                                  color: Colors.grey)),
+                                          child: d.DropdownButtonHideUnderline(
+                                            child: d.DropdownButton<int>(
+                                              menuMaxHeight: 175,
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                bottom: Radius.circular(12),
+                                              ),
+                                              dropdownColor: kBackgroundColor,
+                                              focusColor: Colors.white,
+                                              value: sem,
+                                              icon: Icon(
+                                                  Icons.expand_more_outlined),
+                                              style: theme.textTheme.headline6!
+                                                  .copyWith(fontSize: 16.0),
+                                              iconEnabledColor: Colors.black,
+                                              items: semList
+                                                  .map<d.DropdownMenuItem<int>>(
+                                                      (int value) {
+                                                return d.DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value.toString(),
+                                                    style: theme
+                                                        .textTheme.headline6!
+                                                        .copyWith(
+                                                            fontSize: 16.0),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              hint: Text(
+                                                "Select Sem",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  sem = value!;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
                             ],
                           )),
                         )),
@@ -267,20 +413,41 @@ class _CategorySelectionState extends State<CategorySelection> {
                             pageIndex = 1;
                           });
                         }
-                  : dept != null && userCollege != null
-                      ? () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignupScreen(
-                                        role: _instituteData
-                                            .categoryList[selectedIndex]
-                                            .toLowerCase(),
-                                        institute: userCollege!,
-                                        department: dept!,
-                                      )));
-                        }
-                      : null,
+                  : _instituteData.categoryList[selectedIndex].toLowerCase() ==
+                          'student'
+                      ? dept != null &&
+                              userCollege != null &&
+                              year != null &&
+                              sem != null
+                          ? () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignupScreen(
+                                            role: _instituteData
+                                                .categoryList[selectedIndex]
+                                                .toLowerCase(),
+                                            institute: userCollege!,
+                                            department: dept!,
+                                            sem: sem,
+                                            year: year,
+                                          )));
+                            }
+                          : null
+                      : dept != null && userCollege != null
+                          ? () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignupScreen(
+                                            role: _instituteData
+                                                .categoryList[selectedIndex]
+                                                .toLowerCase(),
+                                            institute: userCollege!,
+                                            department: dept!,
+                                          )));
+                            }
+                          : null,
 
               // selectedIndex == -1
               //     ? null
@@ -316,9 +483,18 @@ class _CategorySelectionState extends State<CategorySelection> {
                         ? selectedIndex == -1
                             ? Colors.grey
                             : kPrimary
-                        : dept != null && userCollege != null
-                            ? kPrimary
-                            : Colors.grey),
+                        : _instituteData.categoryList[selectedIndex]
+                                    .toLowerCase() ==
+                                'student'
+                            ? dept != null &&
+                                    userCollege != null &&
+                                    year != null &&
+                                    sem != null
+                                ? kPrimary
+                                : Colors.grey
+                            : dept != null && userCollege != null
+                                ? kPrimary
+                                : Colors.grey),
                 child: Text(
                   'Next',
                   style: theme.textTheme.headline6!.copyWith(
