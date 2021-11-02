@@ -207,6 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         'department',
                                         jsonDecode(
                                             response.body)['department']);
+                                    // prefs.setInt('sem',
+                                    //     jsonDecode(response.body)['sem']);
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
