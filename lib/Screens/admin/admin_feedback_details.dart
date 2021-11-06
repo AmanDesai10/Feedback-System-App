@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:feedsys/Screens/admin/admin_all_feedback_list.dart';
 import 'package:feedsys/Screens/admin/data/feedbackDetails.dart';
 import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class AdminFeedbackDetails extends StatefulWidget {
   final FeedbackDetails data;
@@ -21,6 +24,7 @@ class AdminFeedbackDetails extends StatefulWidget {
 class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _duedateController = TextEditingController();
+  bool load = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,153 +65,226 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 32.0)
             .copyWith(bottom: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleText(text: 'Name'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: feedbackName!,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'Description'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: feedbackDescription!,
-                maxLines: 5,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'FeedBack Of'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: feedbackOf!,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'Institute'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: institute!,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'Department'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: dept!,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'Template'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                value: template,
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleText(text: 'Name'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: feedbackName!,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'Description'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: feedbackDescription!,
+                      maxLines: 5,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'FeedBack Of'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: feedbackOf!,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'Institute'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: institute!,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'Department'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: dept!,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'Template'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      value: template,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TitleText(
-                          text: 'Year',
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleText(
+                                text: 'Year',
+                              ),
+                              SizedBox(
+                                height: 14.0,
+                              ),
+                              ReadOnlyArgTextField(
+                                readOnly: true,
+                                value: year.toString(),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(
-                          height: 14.0,
+                          width: 32.0,
                         ),
-                        ReadOnlyArgTextField(
-                          readOnly: true,
-                          value: year.toString(),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleText(
+                                text: 'Semester',
+                              ),
+                              SizedBox(
+                                height: 14.0,
+                              ),
+                              ReadOnlyArgTextField(
+                                readOnly: true,
+                                value: sem.toString(),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 32.0,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleText(
-                          text: 'Semester',
-                        ),
-                        SizedBox(
-                          height: 14.0,
-                        ),
-                        ReadOnlyArgTextField(
-                          readOnly: true,
-                          value: sem.toString(),
-                        )
-                      ],
+                    SizedBox(
+                      height: 24.0,
                     ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              TitleText(text: 'Active Date'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                controller: _dateController,
-                suffixIcon: Icon(
-                  Icons.calendar_today,
-                  color: Colors.black,
+                    TitleText(text: 'Active Date'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      controller: _dateController,
+                      suffixIcon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    TitleText(text: 'Due Date'),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    ReadOnlyArgTextField(
+                      readOnly: true,
+                      controller: _duedateController,
+                      suffixIcon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 24.0,
+            ),
+            SizedBox(
+              height: 24.0,
+            ),
+            GestureDetector(
+              onTap: () async {
+                setState(() {
+                  load = true;
+                });
+                var response = await http.delete(
+                  Uri.parse(
+                      "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                );
+                log(response.statusCode.toString());
+                setState(() {
+                  load = false;
+                });
+                Navigator.pop(context);
+                Navigator.pop(context);
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminAllFeedbackList()));
+                if (response.statusCode == 200) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text("${jsonDecode(response.body)['message']}")));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text("${jsonDecode(response.body)['message']}")));
+                }
+              },
+              child: Container(
+                height: 50,
+                // padding: EdgeInsets.symmetric(vertical: 14),
+                width: size.width,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    color: Colors.red),
+                child: load
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: kWhite,
+                                strokeWidth: 3,
+                              )),
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          'Delete',
+                          style: theme.textTheme.headline6!.copyWith(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
               ),
-              TitleText(text: 'Due Date'),
-              SizedBox(
-                height: 16.0,
-              ),
-              ReadOnlyArgTextField(
-                readOnly: true,
-                controller: _duedateController,
-                suffixIcon: Icon(
-                  Icons.calendar_today,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
