@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   Future getPreviousUser() async {
     String url = "https://sgp-feedback-system.herokuapp.com/api/user?id=";
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    userid = preferences.getString('_id');
+    userid = preferences.getString('rem_id');
     setState(() {
       this.userid = userid;
     });

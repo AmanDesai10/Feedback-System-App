@@ -196,9 +196,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
                                     if (isRemember) {
-                                      prefs.setString('_id',
+                                      prefs.setString('rem_id',
                                           jsonDecode(response.body)['_id']);
                                     }
+                                    prefs.setString('_id',
+                                        jsonDecode(response.body)['_id']);
                                     prefs.setString('name',
                                         jsonDecode(response.body)['userName']);
                                     prefs.setString('institute',
