@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:feedsys/Screens/admin/admin_add_feedback.dart';
+import 'package:feedsys/Screens/admin/admin_all_feedback_list.dart';
+import 'package:feedsys/Screens/admin/admin_question_list.dart';
 import 'package:feedsys/Screens/admin/admin_question_template.dart';
 
 import 'package:feedsys/constants/colors.dart';
@@ -139,10 +141,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => AdminAnalyticsListScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminAllFeedbackList()));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -180,10 +182,11 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => AdminAnalyticsListScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AdminQuestionTemplateList()));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -198,7 +201,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.speaker_notes_outlined,
+                              Icons.format_list_bulleted_outlined,
                               size: 42.0,
                             ),
                             SizedBox(
@@ -206,7 +209,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             ),
                             Center(
                               child: Text(
-                                'Add Question Template',
+                                'Question Template List',
                                 style: theme.textTheme.headline6!
                                     .copyWith(fontSize: 16.0),
                                 textAlign: TextAlign.center,

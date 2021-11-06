@@ -186,27 +186,30 @@ class TitleText extends StatelessWidget {
 }
 
 class ReadOnlyArgTextField extends StatelessWidget {
-  const ReadOnlyArgTextField({
-    Key? key,
-    this.value = '',
-    this.hintText,
-    this.readOnly = false,
-    this.suffixIcon,
-    this.onChanged,
-    this.controller,
-  }) : super(key: key);
+  const ReadOnlyArgTextField(
+      {Key? key,
+      this.value = '',
+      this.hintText,
+      this.readOnly = false,
+      this.suffixIcon,
+      this.onChanged,
+      this.controller,
+      this.maxLines = 1})
+      : super(key: key);
   final String value;
   final Widget? suffixIcon;
   final String? hintText;
   final Function(String)? onChanged;
   final bool readOnly;
   final TextEditingController? controller;
+  final int maxLines;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final TextEditingController textcontroller =
         TextEditingController(text: value);
     return TextFormField(
+      maxLines: maxLines,
       readOnly: readOnly,
       controller: value.isNotEmpty ? textcontroller : controller,
       onChanged: onChanged,

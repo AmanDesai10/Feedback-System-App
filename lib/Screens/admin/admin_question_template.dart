@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/components/textfileds.dart';
@@ -64,7 +65,7 @@ class _AdminQuestionTemplateState extends State<AdminQuestionTemplate> {
                     height: 16.0,
                   ),
                   AuthTextField(
-                      hintText: 'Enter feedback name',
+                      hintText: 'Enter template name',
                       onChanged: (value) {
                         templateName = value;
                       }),
@@ -251,6 +252,20 @@ class _AdminQuestionTemplateState extends State<AdminQuestionTemplate> {
                                                           .textTheme.bodyText1!
                                                           .copyWith(
                                                               fontSize: 18.0))),
+                                              GestureDetector(
+                                                  onDoubleTap: () {},
+                                                  onTap: () {
+                                                    questionsList
+                                                        .removeAt(index);
+                                                    setState(() {});
+                                                  },
+                                                  child: Icon(
+                                                    Icons.delete_outline,
+                                                    color: Colors.red,
+                                                  )),
+                                              SizedBox(
+                                                width: 8.0,
+                                              ),
                                             ],
                                           ),
                                         )),
@@ -272,6 +287,11 @@ class _AdminQuestionTemplateState extends State<AdminQuestionTemplate> {
                 setState(() {
                   load = true;
                 });
+                log(jsonEncode({
+                  "name": templateName,
+                  "questions": questionsList,
+                  "createdBy": userid
+                }));
                 var response = await http.post(
                     Uri.parse(
                         "https://sgp-feedback-system.herokuapp.com/api/addfeedbackque"),

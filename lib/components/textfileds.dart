@@ -4,30 +4,35 @@ class AuthTextField extends StatelessWidget {
   const AuthTextField(
       {Key? key,
       this.title,
-      required this.hintText,
-      required this.onChanged,
+      this.hintText,
+      this.onChanged,
       this.validator,
       this.isObscure = false,
       this.suffixIcon,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      this.readOnly = false,
+      this.initialValue})
       : super(key: key);
 
   final String? title;
-  final String hintText;
+  final String? hintText;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final bool isObscure;
   final Widget? suffixIcon;
   final int maxLines;
+  final bool readOnly;
+  final String? initialValue;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return TextFormField(
+      readOnly: readOnly,
       maxLines: maxLines,
       cursorColor: theme.colorScheme.secondary,
       keyboardType: TextInputType.emailAddress,
       cursorRadius: Radius.circular(16.0),
-      // initialValue: widget.initialValue,
+      initialValue: initialValue,
       cursorWidth: 1.0,
       autocorrect: false,
       obscureText: isObscure,
