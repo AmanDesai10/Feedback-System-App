@@ -16,3 +16,10 @@ Future<List> getFeedbackList() async {
 
   return jsonDecode(feedbackListResponse.body);
 }
+
+Future<List> getAllFeedbackList() async {
+  var feedbackListResponse = await http.get(Uri.parse(
+      "https://sgp-feedback-system.herokuapp.com/api/getfeedbacklist"));
+
+  return jsonDecode(feedbackListResponse.body);
+}

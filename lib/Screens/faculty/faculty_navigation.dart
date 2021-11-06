@@ -1,9 +1,8 @@
+import 'package:feedsys/Screens/faculty/faculty_homescreen.dart';
 import 'package:feedsys/Screens/student/student_feedbackscreen.dart';
 import 'package:feedsys/Screens/student/student_homescreen.dart';
 import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/constants/colors.dart';
-import 'package:feedsys/faculty/faculty_analytics_tabview.dart';
-import 'package:feedsys/faculty/faculty_homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
 

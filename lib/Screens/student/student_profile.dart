@@ -53,9 +53,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     width: 120,
                     height: 120,
-                    child: Image.network(
-                      'https://cdn3.iconfinder.com/data/icons/business-round-flat-vol-1-1/36/user_account_profile_avatar_person_student_male-512.png',
-                      fit: BoxFit.cover,
+                    // child: Image.network(
+                    //   'https://cdn3.iconfinder.com/data/icons/business-round-flat-vol-1-1/36/user_account_profile_avatar_person_student_male-512.png',
+                    //   fit: BoxFit.cover,
+                    // ),
+                    child: CircleAvatar(
+                      child: Text(username!.substring(0, 1)),
                     ),
                   ),
                 ),
@@ -103,8 +106,9 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 8.0,
             ),
-            ReadOnlyTextField(
+            ReadOnlyArgTextField(
               value: username!,
+              readOnly: true,
             ),
             SizedBox(
               height: 16.0,
@@ -113,8 +117,9 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 16.0,
             ),
-            ReadOnlyTextField(
+            ReadOnlyArgTextField(
               value: institute!,
+              readOnly: true,
             ),
             SizedBox(
               height: 16.0,
@@ -123,8 +128,9 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 16.0,
             ),
-            ReadOnlyTextField(
+            ReadOnlyArgTextField(
               value: department!,
+              readOnly: true,
             ),
             SizedBox(
               height: 32.0,
@@ -173,33 +179,50 @@ class TitleText extends StatelessWidget {
 
     return Text(
       text,
-      style: theme.textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
+      style: theme.textTheme.headline6!
+          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
     );
   }
 }
 
-class ReadOnlyTextField extends StatelessWidget {
-  const ReadOnlyTextField({
+class ReadOnlyArgTextField extends StatelessWidget {
+  const ReadOnlyArgTextField({
     Key? key,
-    required this.value,
+    this.value = '',
+    this.hintText,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.onChanged,
+    this.controller,
   }) : super(key: key);
   final String value;
+  final Widget? suffixIcon;
+  final String? hintText;
+  final Function(String)? onChanged;
+  final bool readOnly;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final TextEditingController controller = TextEditingController(text: value);
+    final TextEditingController textcontroller =
+        TextEditingController(text: value);
     return TextFormField(
-      readOnly: true,
-      controller: controller,
+      readOnly: readOnly,
+      controller: value.isNotEmpty ? textcontroller : controller,
+      onChanged: onChanged,
       style: theme.textTheme.headline6!.copyWith(fontSize: 18),
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        hintText: hintText,
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(18.0),
             borderSide: BorderSide(color: Colors.grey.shade400)),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(18.0),
             borderSide: BorderSide(color: Colors.grey)),
         contentPadding: EdgeInsets.all(16.0).copyWith(right: 16 * 1.4 * 2),
+        hintStyle: theme.textTheme.bodyText2!
+            .copyWith(fontSize: 16.0, color: Colors.grey.shade400),
       ),
     );
   }

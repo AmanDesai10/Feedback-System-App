@@ -3,24 +3,27 @@ import 'package:flutter/material.dart';
 class AuthTextField extends StatelessWidget {
   const AuthTextField(
       {Key? key,
-      required this.title,
+      this.title,
       required this.hintText,
       required this.onChanged,
       this.validator,
       this.isObscure = false,
-      this.suffixIcon})
+      this.suffixIcon,
+      this.maxLines = 1})
       : super(key: key);
 
-  final String title;
+  final String? title;
   final String hintText;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final bool isObscure;
   final Widget? suffixIcon;
+  final int maxLines;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return TextFormField(
+      maxLines: maxLines,
       cursorColor: theme.colorScheme.secondary,
       keyboardType: TextInputType.emailAddress,
       cursorRadius: Radius.circular(16.0),

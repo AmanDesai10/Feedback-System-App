@@ -18,3 +18,7 @@ final passwordValidator = MultiValidator([
   PatternValidator(r'(?=.*?[#?!@$%^&*-])',
       errorText: 'Passwords must have at least one special character')
 ]);
+
+final fieldValidator = MultiValidator([
+  RequiredValidator(errorText: "This Field is Required*"),
+]);

@@ -1,6 +1,6 @@
+import 'package:feedsys/Screens/faculty/faculty_analytics_view.dart';
 import 'package:feedsys/Screens/student/student_feedbackscreen.dart';
 import 'package:feedsys/constants/colors.dart';
-import 'package:feedsys/faculty/faculty_analytics_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

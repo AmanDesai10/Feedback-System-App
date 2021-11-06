@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:feedsys/Screens/faculty/faculty_analytics_list.dart';
 import 'package:feedsys/constants/colors.dart';
-import 'package:feedsys/faculty/faculty_analytics_list.dart';
-import 'package:feedsys/faculty/faculty_analytics_tabview.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

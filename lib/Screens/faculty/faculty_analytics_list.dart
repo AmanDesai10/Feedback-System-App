@@ -1,7 +1,7 @@
+import 'package:feedsys/Screens/faculty/data/analytic_data.dart';
+import 'package:feedsys/Screens/faculty/faculty_analytics_tabview.dart';
 import 'package:feedsys/Widgets/feedback_card.dart';
 import 'package:feedsys/constants/colors.dart';
-import 'package:feedsys/faculty/data/analytic_data.dart';
-import 'package:feedsys/faculty/faculty_analytics_tabview.dart';
 import 'package:flutter/material.dart';
 
 class FacultyAnalyticsListScreen extends StatefulWidget {
