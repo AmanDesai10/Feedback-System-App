@@ -35,7 +35,7 @@ class _AdminAddFeedbackState extends State<AdminAddFeedback> {
   String? dept;
   int? year;
   int? sem;
-  String? userid;
+  String? userid, token;
   List<int> yearList = [2016, 2017, 2018, 2019, 2020, 2021];
   List<int> semList = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -47,9 +47,10 @@ class _AdminAddFeedbackState extends State<AdminAddFeedback> {
   void getFacultyList() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userid = preferences.getString('_id');
+    token = preferences.getString('token');
     var response = await http.get(
-      Uri.parse("https://sgp-feedback-system.herokuapp.com/api/faculty"),
-    );
+        Uri.parse("https://sgp-feedback-system.herokuapp.com/api/faculty"),
+        headers: {'Authorization': 'Bearer $token'});
 
     List responseList = jsonDecode(response.body);
     responseList.forEach((element) {
@@ -60,9 +61,14 @@ class _AdminAddFeedbackState extends State<AdminAddFeedback> {
   }
 
   void getFeedbackQuestion() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    token = preferences.getString('token');
     var response = await http.get(
-      Uri.parse("https://sgp-feedback-system.herokuapp.com/api/getfeedbackque"),
-    );
+        Uri.parse(
+          "https://sgp-feedback-system.herokuapp.com/api/getfeedbackque",
+        ),
+        headers: {'Authorization': 'Bearer $token'});
+
     List responseList = jsonDecode(response.body);
     responseList.forEach((element) {
       questionList.add(element['name']);
@@ -570,7 +576,10 @@ class _AdminAddFeedbackState extends State<AdminAddFeedback> {
                 var response = await http.post(
                     Uri.parse(
                         "https://sgp-feedback-system.herokuapp.com/api/newFeedback"),
-                    headers: {'Content-Type': 'application/json'},
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer $token'
+                    },
                     body: jsonEncode({
                       'name': feedbackName,
                       'description': feedbackDescription,

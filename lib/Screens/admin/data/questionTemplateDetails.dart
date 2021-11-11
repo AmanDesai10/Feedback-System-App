@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestionTemplateDetials {
   final String? name;
@@ -13,8 +14,11 @@ class QuestionTemplateDetials {
 }
 
 Future<List> getAlltemplateList() async {
-  var feedbackListResponse = await http.get(Uri.parse(
-      "https://sgp-feedback-system.herokuapp.com/api/getfeedbackque"));
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String? token = preferences.getString('token');
+  var feedbackListResponse = await http.get(
+      Uri.parse("https://sgp-feedback-system.herokuapp.com/api/getfeedbackque"),
+      headers: {'Authorization': 'Bearer $token'});
 
   return jsonDecode(feedbackListResponse.body);
 }

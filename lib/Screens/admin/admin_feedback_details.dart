@@ -9,6 +9,7 @@ import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminFeedbackDetails extends StatefulWidget {
   final FeedbackDetails data;
@@ -225,10 +226,13 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
                 setState(() {
                   load = true;
                 });
+                SharedPreferences preferences =
+                    await SharedPreferences.getInstance();
+                String? token = preferences.getString('token');
                 var response = await http.delete(
-                  Uri.parse(
-                      "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
-                );
+                    Uri.parse(
+                        "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                    headers: {'Authorization': 'Bearer $token'});
                 log(response.statusCode.toString());
                 setState(() {
                   load = false;

@@ -31,7 +31,10 @@ class _MyAppState extends State<MyApp> {
     print(userid);
 
     if (userid != null) {
-      var response = await http.get(Uri.parse(url + userid!));
+      String token = preferences.getString('token')!;
+
+      var response = await http.get(Uri.parse(url + userid!),
+          headers: {'Authorization': 'Bearer $token'});
       setState(() {
         role = jsonDecode(response.body)['role'];
         print(role);

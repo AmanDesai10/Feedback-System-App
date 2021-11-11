@@ -201,6 +201,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                     prefs.setString('_id',
                                         jsonDecode(response.body)['_id']);
+                                    prefs.setString('token',
+                                        jsonDecode(response.body)['token']);
                                     prefs.setString('name',
                                         jsonDecode(response.body)['userName']);
                                     prefs.setString('institute',

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // final List<String> questions = [
 //   'This is the Question 1',
@@ -12,10 +13,12 @@ import 'package:http/http.dart' as http;
 // ];
 
 class StudentFeedbackQuestionScreen extends StatefulWidget {
-  const StudentFeedbackQuestionScreen({Key? key, required this.questions})
+  const StudentFeedbackQuestionScreen(
+      {Key? key, required this.questions, required this.id})
       : super(key: key);
 
   final List questions;
+  final String? id;
 
   @override
   _StudentFeedbackQuestionScreenState createState() =>
@@ -209,11 +212,39 @@ class _StudentFeedbackQuestionScreenState
             GestureDetector(
               onTap: selectedOption.containsValue(0)
                   ? null
-                  : () {
-                      if (selectedOption.containsValue(0)) {
-                        print('Please select ans of all question');
+                  : () async {
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      String? userid = preferences.getString('_id');
+                      String? token = preferences.getString('token');
+
+                      log(jsonEncode({
+                        'feedbackId': widget.id,
+                        'userId': userid,
+                        'ans': selectedOption.values.toList()
+                      }));
+                      var response = await http.post(
+                          Uri.parse(
+                              "https://sgp-feedback-system.herokuapp.com/api/feedbackAns"),
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer $token'
+                          },
+                          body: jsonEncode({
+                            'feedbackId': widget.id,
+                            'userId': userid,
+                            'ans': selectedOption.values.toList()
+                          }));
+                      log(response.body.toString());
+                      if (response.statusCode == 200) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "${jsonDecode(response.body)['message']}")));
                       } else {
-                        print('submitting');
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "${jsonDecode(response.body)['message']}")));
                       }
                     },
               child: Container(

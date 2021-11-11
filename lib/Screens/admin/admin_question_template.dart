@@ -280,40 +280,47 @@ class _AdminQuestionTemplateState extends State<AdminQuestionTemplate> {
               height: 16.0,
             ),
             GestureDetector(
-              onTap: () async {
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                String? userid = preferences.getString('_id');
-                setState(() {
-                  load = true;
-                });
-                log(jsonEncode({
-                  "name": templateName,
-                  "questions": questionsList,
-                  "createdBy": userid
-                }));
-                var response = await http.post(
-                    Uri.parse(
-                        "https://sgp-feedback-system.herokuapp.com/api/addfeedbackque"),
-                    headers: {'Content-Type': 'application/json'},
-                    body: jsonEncode({
-                      "name": templateName,
-                      "questions": questionsList,
-                      "createdBy": userid
-                    }));
-                setState(() {
-                  load = false;
-                });
-                if (response.statusCode == 200) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Question template created")));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text("${jsonDecode(response.body)['message']}")));
-                }
-              },
+              onTap: checkdetails()
+                  ? () async {
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      String? userid = preferences.getString('_id');
+
+                      String? token = preferences.getString('token');
+                      setState(() {
+                        load = true;
+                      });
+                      log(jsonEncode({
+                        "name": templateName,
+                        "questions": questionsList,
+                        "createdBy": userid
+                      }));
+                      var response = await http.post(
+                          Uri.parse(
+                              "https://sgp-feedback-system.herokuapp.com/api/addfeedbackque"),
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer $token'
+                          },
+                          body: jsonEncode({
+                            "name": templateName,
+                            "questions": questionsList,
+                            "createdBy": userid
+                          }));
+                      setState(() {
+                        load = false;
+                      });
+                      if (response.statusCode == 200) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Question template created")));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "${jsonDecode(response.body)['message']}")));
+                      }
+                    }
+                  : () {},
               child: Container(
                 height: 50,
                 // padding: EdgeInsets.symmetric(vertical: 14),
