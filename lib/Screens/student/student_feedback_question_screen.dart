@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-// final List<String> questions = [
-//   'This is the Question 1',
-//   'This is the Question 2',
-//   'This is the Question 3',
-// ];
+typedef BoolValue = void Function(bool);
 
 class StudentFeedbackQuestionScreen extends StatefulWidget {
-  const StudentFeedbackQuestionScreen(
-      {Key? key, required this.questions, required this.id})
+  StudentFeedbackQuestionScreen(
+      {Key? key,
+      required this.questions,
+      required this.id,
+      required this.callback})
       : super(key: key);
+  BoolValue callback;
 
   final List questions;
   final String? id;
@@ -237,6 +237,7 @@ class _StudentFeedbackQuestionScreenState
                           }));
                       log(response.body.toString());
                       if (response.statusCode == 200) {
+                        widget.callback(true);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(

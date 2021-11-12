@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:feedsys/Screens/faculty/faculty_analytics_view.dart';
 import 'package:feedsys/Screens/student/student_feedbackscreen.dart';
 import 'package:feedsys/constants/colors.dart';
@@ -16,6 +18,8 @@ class FacultyAnalyticsTabView extends StatefulWidget {
 class _FacultyAnalyticsTabViewState extends State<FacultyAnalyticsTabView> {
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final ThemeData theme = Theme.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -31,36 +35,15 @@ class _FacultyAnalyticsTabViewState extends State<FacultyAnalyticsTabView> {
               size: 28.0,
             ),
           ),
+          title: Text(
+            widget.title,
+            style: theme.textTheme.headline6,
+          ),
           backgroundColor: kWhite,
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TabBar(
-                  labelColor: kPrimary,
-                  unselectedLabelColor: Colors.blueGrey[600],
-                  tabs: [
-                    Tab(
-                      text: "Your Analytics",
-                    ),
-                    Tab(
-                      text: "Course Analytics",
-                    )
-                  ],
-                  indicatorColor: kPrimary,
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 40),
-                ),
-              ],
-            ),
-          ),
         ),
-        body: TabBarView(children: [
-          FacultyAnalyticsScreen(
-            title: widget.title,
-          ),
-          Icon(Icons.ac_unit)
-        ]),
+        body: FacultyAnalyticsScreen(
+          title: widget.title,
+        ),
       ),
     );
   }

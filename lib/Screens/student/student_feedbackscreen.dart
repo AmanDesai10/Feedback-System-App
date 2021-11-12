@@ -25,8 +25,10 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
   List feedbackList = [];
   List<FeedbackData> feedbackData = [];
   bool load = false;
+  bool reload = false;
 
   void extractFeedbackData() {
+    feedbackData = [];
     feedbackList.forEach((element) {
       int feedbackEndDate =
           DateTime.parse(element['dueTo']).difference(DateTime.now()).inDays;
@@ -67,6 +69,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
     extractFeedbackData();
     setState(() {
       load = false;
+      reload = false;
     });
   }
 
@@ -78,10 +81,9 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // List<FeedbackData> feedbackData = [
-    //   FeedbackData(title: 'Prof. Aman Desai', date: 2),
-    //   FeedbackData(title: 'Prof. Krutik Gadhiya', date: 4),
-    // ];
+    if (reload) {
+      getFeedbacks();
+    }
     print('reload');
     final Size size = MediaQuery.of(context).size;
     final ThemeData theme = Theme.of(context);
@@ -144,7 +146,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
                       ),
                     ),
                   )
-                : feedbackList.isNotEmpty
+                : feedbackList.isEmpty
                     ? Center(
                         child: Text(
                           'No pending feedbacks!!',
@@ -189,6 +191,10 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
                                                         questions: questions,
                                                         id: feedbackData[index]
                                                             .feedbackId,
+                                                        callback: (value) {
+                                                          reload = value;
+                                                          setState(() {});
+                                                        },
                                                       )));
                                         },
                                         child: Container(
