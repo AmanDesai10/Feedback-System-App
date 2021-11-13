@@ -222,6 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       (route) => false,
                                     );
                                   } else if (response.statusCode == 401) {
+                                    log(response.body.toString());
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

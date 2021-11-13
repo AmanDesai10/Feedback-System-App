@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/utils/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,8 +33,6 @@ class _StudentFeedbackQuestionScreenState
 
   @override
   void initState() {
-    // TODO: implement initState
-
     widget.questions.forEach((element) {
       print(element);
       a[element] = [1, 2, 3, 4, 5];
@@ -50,6 +49,7 @@ class _StudentFeedbackQuestionScreenState
   @override
   Widget build(BuildContext context) {
     log(selectedOption.values.toList().toString());
+    final bool isDesktop = DeviceScreen.isDesktop(context);
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -66,7 +66,7 @@ class _StudentFeedbackQuestionScreenState
         ),
         backgroundColor: kWhite,
         title: Text(
-          'Feedback List',
+          'Give Feedback',
           style: theme.textTheme.headline6,
         ),
       ),
@@ -86,12 +86,16 @@ class _StudentFeedbackQuestionScreenState
                 : Expanded(
                     child: Container(
                       child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
                         child: Column(
                           children: [
                             ...List.generate(
                                 widget.questions.length,
                                 (index) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: isDesktop
+                                          ? EdgeInsets.symmetric(
+                                              horizontal: 32.0, vertical: 12.0)
+                                          : const EdgeInsets.all(8.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -250,6 +254,7 @@ class _StudentFeedbackQuestionScreenState
                     },
               child: Container(
                 height: 50,
+                width: isDesktop ? 450 : null,
                 // padding: EdgeInsets.symmetric(vertical: 14),
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(

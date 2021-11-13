@@ -35,7 +35,9 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
       log(feedbackEndDate.toString());
       feedbackData.add(FeedbackData(
           title: element['name'],
-          date: feedbackEndDate,
+          days: feedbackEndDate,
+          createdBy: element['createdBy']['userName'],
+          desc: element['description'],
           feedbackId: element['_id']));
     });
   }
@@ -64,7 +66,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
     // print(feedbackList[0]['feedbackQuestions']);
     // log(jsonDecode(feedbackListResponse.body).toString());
 
-    feedbackList = await getFeedbackList();
+    feedbackList = await getfacultyFeedbackList();
     print(feedbackList.toString());
     extractFeedbackData();
     setState(() {
@@ -84,7 +86,6 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
     if (reload) {
       getFeedbacks();
     }
-    print('reload');
     final Size size = MediaQuery.of(context).size;
     final ThemeData theme = Theme.of(context);
     return Padding(
@@ -236,7 +237,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
                                                         height: 16.0,
                                                       ),
                                                       Text(
-                                                        'Due in ${feedbackData[index].date} days',
+                                                        'Due in ${feedbackData[index].days} days',
                                                       )
                                                     ],
                                                   ),

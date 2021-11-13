@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:feedsys/Screens/welcome.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/utils/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,6 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDesktop = DeviceScreen.isDesktop(context);
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
     return Container(
@@ -148,9 +150,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       (route) => false);
                 },
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: kPrimary, borderRadius: BorderRadius.circular(10)),
                   padding: EdgeInsets.all(16.0),
                   width: 120,
-                  color: kPrimary,
                   child: Center(
                       child: Text(
                     "Logout",
