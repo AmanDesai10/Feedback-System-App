@@ -13,27 +13,58 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentFeedbackScreen extends StatefulWidget {
   const StudentFeedbackScreen({Key? key}) : super(key: key);
-  // final List feedbackResponseList;
 
   @override
   _StudentFeedbackScreenState createState() => _StudentFeedbackScreenState();
 }
 
-class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
+class _StudentFeedbackScreenState extends State<StudentFeedbackScreen>
+    with SingleTickerProviderStateMixin {
   List<String> categoryList = ['Faculty', 'Course', 'Other'];
   String? selectedCategory;
-  List feedbackList = [];
-  List<FeedbackData> feedbackData = [];
+  List facultyfeedbackList = [];
+  List coursefeedbackList = [];
+  List<FeedbackData> facultyfeedbackData = [];
+  List<FeedbackData> coursefeedbackData = [];
   bool load = false;
   bool reload = false;
+  late TabController _tabController;
 
-  void extractFeedbackData() {
-    feedbackData = [];
-    feedbackList.forEach((element) {
+  List<Widget> list = [
+    Tab(
+        icon: Text(
+      'Faculty',
+      style: TextStyle(fontSize: 18.0),
+    )),
+    Tab(
+        icon: Text(
+      'Course',
+      style: TextStyle(fontSize: 18.0),
+    )),
+  ];
+
+  void extractfacultyFeedbackData() {
+    facultyfeedbackData = [];
+    facultyfeedbackList.forEach((element) {
       int feedbackEndDate =
           DateTime.parse(element['dueTo']).difference(DateTime.now()).inDays;
       log(feedbackEndDate.toString());
-      feedbackData.add(FeedbackData(
+      facultyfeedbackData.add(FeedbackData(
+          title: element['name'],
+          days: feedbackEndDate,
+          createdBy: element['createdBy']['userName'],
+          desc: element['description'],
+          feedbackId: element['_id']));
+    });
+  }
+
+  void extractcourseFeedbackData() {
+    coursefeedbackData = [];
+    coursefeedbackList.forEach((element) {
+      int feedbackEndDate =
+          DateTime.parse(element['dueTo']).difference(DateTime.now()).inDays;
+      log(feedbackEndDate.toString());
+      coursefeedbackData.add(FeedbackData(
           title: element['name'],
           days: feedbackEndDate,
           createdBy: element['createdBy']['userName'],
@@ -46,29 +77,12 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
     setState(() {
       load = true;
     });
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? id = preferences.getString('_id');
-    // // String? institute = preferences.getString('institute');
-    // // String? department = preferences.getString('department');
-    // // int? sem = preferences.getInt('sem');
-    // // log(sem.toString());
 
-    // var UserResponse = await http.get(
-    //     Uri.parse("https://sgp-feedback-system.herokuapp.com/api/user?id=$id"));
-    // String institute = jsonDecode(UserResponse.body)['institute'];
-    // String dept = jsonDecode(UserResponse.body)['department'];
-    // int sem = jsonDecode(UserResponse.body)['sem'];
-
-    // var feedbackListResponse = await http.get(Uri.parse(
-    //     "https://sgp-feedback-system.herokuapp.com/api/getfeedbacklist?institute=$institute&department=$dept&sem=$sem"));
-
-    // feedbackList = jsonDecode(feedbackListResponse.body);
-    // print(feedbackList[0]['feedbackQuestions']);
-    // log(jsonDecode(feedbackListResponse.body).toString());
-
-    feedbackList = await getfacultyFeedbackList();
-    print(feedbackList.toString());
-    extractFeedbackData();
+    facultyfeedbackList = await getfacultyFeedbackList();
+    coursefeedbackList = await getcourseFeedbackList();
+    print(facultyfeedbackList.toString());
+    extractfacultyFeedbackData();
+    extractcourseFeedbackData();
     setState(() {
       load = false;
       reload = false;
@@ -78,7 +92,14 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
   @override
   void initState() {
     getFeedbacks();
+    _tabController = TabController(length: list.length, vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,163 +115,262 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
-            //   decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(16.0),
-            //       border: Border.all(color: Colors.grey)),
-            //   child: d.DropdownButtonHideUnderline(
-            //     child: d.DropdownButton<String>(
-            //       borderRadius: BorderRadius.vertical(
-            //         bottom: Radius.circular(12),
-            //       ),
-            //       focusColor: kBackgroundColor,
-            //       value: selectedCategory,
-            //       icon: Icon(Icons.expand_more_outlined),
-            //       style: theme.textTheme.headline6!.copyWith(fontSize: 16.0),
-            //       iconEnabledColor: Colors.black,
-            //       items:
-            //           categoryList.map<d.DropdownMenuItem<String>>((String value) {
-            //         return d.DropdownMenuItem<String>(
-            //           value: value,
-            //           child: Text(
-            //             value,
-            //             style: theme.textTheme.headline6!.copyWith(fontSize: 16.0),
-            //           ),
-            //         );
-            //       }).toList(),
-            //       hint: Text(
-            //         "Select category",
-            //         style: TextStyle(
-            //             color: Colors.grey,
-            //             fontSize: 14,
-            //             fontWeight: FontWeight.w500),
-            //       ),
-            //       onChanged: (value) {
-            //         setState(() {
-            //           selectedCategory = value!;
-            //         });
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 16.0,
-            // ),
-            load
-                ? Center(
-                    child: SizedBox(
-                      height: 45,
-                      width: 45,
-                      child: CircularProgressIndicator(
-                        color: kPrimary,
-                      ),
-                    ),
-                  )
-                : feedbackList.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No pending feedbacks!!',
-                          style: theme.textTheme.headline6,
-                        ),
-                      )
-                    : Expanded(
-                        child: Container(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: List.generate(
-                                  feedbackData.length,
-                                  (index) => GestureDetector(
-                                        onTap: () async {
-                                          setState(() {
-                                            load = true;
-                                          });
-                                          SharedPreferences preferences =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          String? token =
-                                              preferences.getString('token');
-                                          var response = await http.get(
-                                              Uri.parse(
-                                                  'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${feedbackList[index]['feedbackQuestions']['_id']}'),
-                                              headers: {
-                                                'Authorization': 'Bearer $token'
-                                              });
-                                          // questions = jsonDecode(response.body)['questions'];
-                                          List questions =
-                                              jsonDecode(response.body)[0]
-                                                  ['questions'];
-                                          setState(() {
-                                            load = false;
-                                          });
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      StudentFeedbackQuestionScreen(
-                                                        questions: questions,
-                                                        id: feedbackData[index]
-                                                            .feedbackId,
-                                                        callback: (value) {
-                                                          reload = value;
-                                                          setState(() {});
-                                                        },
-                                                      )));
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 12.0),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 8.0),
-                                          height: 110,
-                                          width: size.width - 50,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              border:
-                                                  Border.all(color: kPrimary),
-                                              color: kBackgroundColor),
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 32.0,
-                                              ),
-                                              SizedBox(width: 16.0),
-                                              Expanded(
-                                                child: Container(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        feedbackData[index]
-                                                            .title,
-                                                        style: theme.textTheme
-                                                            .headline6,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 16.0,
-                                                      ),
-                                                      Text(
-                                                        'Due in ${feedbackData[index].days} days',
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )),
+            if (!load) ...[
+              TabBar(
+                tabs: list,
+                controller: _tabController,
+                labelColor: kPrimary,
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: kPrimary,
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+            ],
+            Expanded(
+              child: Container(
+                child: TabBarView(controller: _tabController, children: [
+                  load
+                      ? Center(
+                          child: SizedBox(
+                            height: 45,
+                            width: 45,
+                            child: CircularProgressIndicator(
+                              color: kPrimary,
                             ),
                           ),
-                        ),
-                      ),
+                        )
+                      : facultyfeedbackList.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No pending feedbacks!!',
+                                style: theme.textTheme.headline6,
+                              ),
+                            )
+                          : Container(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: List.generate(
+                                      facultyfeedbackData.length,
+                                      (index) => GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                load = true;
+                                              });
+                                              SharedPreferences preferences =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              String? token = preferences
+                                                  .getString('token');
+                                              var response = await http.get(
+                                                  Uri.parse(
+                                                      'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${facultyfeedbackList[index]['feedbackQuestions']['_id']}'),
+                                                  headers: {
+                                                    'Authorization':
+                                                        'Bearer $token'
+                                                  });
+                                              // questions = jsonDecode(response.body)['questions'];
+                                              List questions =
+                                                  jsonDecode(response.body)[0]
+                                                      ['questions'];
+                                              setState(() {
+                                                load = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentFeedbackQuestionScreen(
+                                                            questions:
+                                                                questions,
+                                                            id: facultyfeedbackData[
+                                                                    index]
+                                                                .feedbackId,
+                                                            callback: (value) {
+                                                              reload = value;
+                                                              setState(() {});
+                                                            },
+                                                          )));
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 12.0),
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 8.0),
+                                              height: 110,
+                                              width: size.width - 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                      color: kPrimary),
+                                                  color: kBackgroundColor),
+                                              child: Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 32.0,
+                                                  ),
+                                                  SizedBox(width: 16.0),
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            facultyfeedbackData[
+                                                                    index]
+                                                                .title,
+                                                            style: theme
+                                                                .textTheme
+                                                                .headline6,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 16.0,
+                                                          ),
+                                                          Text(
+                                                            'Due in ${facultyfeedbackData[index].days} days',
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )),
+                                ),
+                              ),
+                            ),
+                  load
+                      ? Center(
+                          child: SizedBox(
+                            height: 45,
+                            width: 45,
+                            child: CircularProgressIndicator(
+                              color: kPrimary,
+                            ),
+                          ),
+                        )
+                      : coursefeedbackList.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No pending feedbacks!!',
+                                style: theme.textTheme.headline6,
+                              ),
+                            )
+                          : Container(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: List.generate(
+                                      coursefeedbackData.length,
+                                      (index) => GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                load = true;
+                                              });
+                                              SharedPreferences preferences =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              String? token = preferences
+                                                  .getString('token');
+                                              var response = await http.get(
+                                                  Uri.parse(
+                                                      'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${facultyfeedbackList[index]['feedbackQuestions']['_id']}'),
+                                                  headers: {
+                                                    'Authorization':
+                                                        'Bearer $token'
+                                                  });
+                                              // questions = jsonDecode(response.body)['questions'];
+                                              List questions =
+                                                  jsonDecode(response.body)[0]
+                                                      ['questions'];
+                                              setState(() {
+                                                load = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentFeedbackQuestionScreen(
+                                                            questions:
+                                                                questions,
+                                                            id: coursefeedbackData[
+                                                                    index]
+                                                                .feedbackId,
+                                                            callback: (value) {
+                                                              reload = value;
+                                                              setState(() {});
+                                                            },
+                                                          )));
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 12.0),
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 8.0),
+                                              height: 110,
+                                              width: size.width - 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                      color: kPrimary),
+                                                  color: kBackgroundColor),
+                                              child: Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 32.0,
+                                                  ),
+                                                  SizedBox(width: 16.0),
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            coursefeedbackData[
+                                                                    index]
+                                                                .title,
+                                                            style: theme
+                                                                .textTheme
+                                                                .headline6,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 16.0,
+                                                          ),
+                                                          Text(
+                                                            'Due in ${coursefeedbackData[index].days} days',
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )),
+                                ),
+                              ),
+                            ),
+                ]),
+              ),
+            ),
           ]),
     );
   }
