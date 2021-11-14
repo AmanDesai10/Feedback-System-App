@@ -898,6 +898,8 @@ class _DesktopAdminAllFeedbackListState
                                           onTap: () {
                                             facultyList = [];
                                             questionList = [];
+                                            courseList = [];
+                                            courseid.clear();
                                             facultyid.clear();
                                             dialogquestionid.clear();
                                             Navigator.pop(context);
@@ -1178,6 +1180,8 @@ class _DesktopAdminAllFeedbackListState
                                                                       questionid[
                                                                           facultyfeedbackData[index]
                                                                               .questionTemplateId]!,
+                                                                  isCourse:
+                                                                      false,
                                                                 ))).then(
                                                         (value) {
                                                       setState(() {
@@ -1335,7 +1339,15 @@ class _DesktopAdminAllFeedbackListState
                                                                       questionid[
                                                                           coursefeedbackData[index]
                                                                               .questionTemplateId]!,
-                                                                )));
+                                                                  isCourse:
+                                                                      true,
+                                                                ))).then(
+                                                        (value) {
+                                                      setState(() {
+                                                        reload = true;
+                                                      });
+                                                    });
+                                                    ;
                                                   },
                                                   child: Container(
                                                     padding:

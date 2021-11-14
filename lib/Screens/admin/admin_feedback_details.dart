@@ -15,8 +15,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AdminFeedbackDetails extends StatefulWidget {
   final FeedbackDetails data;
   final String templateName;
+  final bool isCourse;
   const AdminFeedbackDetails(
-      {Key? key, required this.data, required this.templateName})
+      {Key? key,
+      required this.data,
+      required this.templateName,
+      required this.isCourse})
       : super(key: key);
 
   @override
@@ -71,12 +75,13 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
                     setState(() {
                       load = true;
                     });
+                    String url = widget.isCourse
+                        ? "https://sgp-feedback-system.herokuapp.com/api/courseFeedback?id=${widget.data.id}"
+                        : "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}";
                     SharedPreferences preferences =
                         await SharedPreferences.getInstance();
                     String? token = preferences.getString('token');
-                    var response = await http.delete(
-                        Uri.parse(
-                            "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                    var response = await http.delete(Uri.parse(url),
                         headers: {'Authorization': 'Bearer $token'});
                     log(response.statusCode.toString());
                     setState(() {

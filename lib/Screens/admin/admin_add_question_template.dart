@@ -103,6 +103,7 @@ class _AdminQuestionTemplateState extends State<AdminQuestionTemplate> {
                                                 Container(
                                                   width: double.maxFinite,
                                                   child: AuthTextField(
+                                                      autofocus: true,
                                                       validator: fieldValidator,
                                                       hintText:
                                                           'Enter question',

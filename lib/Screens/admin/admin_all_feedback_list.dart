@@ -142,6 +142,7 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList> {
                                                               feedbackData[
                                                                       index]
                                                                   .questionTemplateId]!,
+                                                          isCourse: false,
                                                         )));
                                           },
                                           child: Container(

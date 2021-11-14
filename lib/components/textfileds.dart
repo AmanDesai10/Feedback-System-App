@@ -11,6 +11,7 @@ class AuthTextField extends StatelessWidget {
       this.suffixIcon,
       this.maxLines = 1,
       this.readOnly = false,
+      this.autofocus = false,
       this.initialValue})
       : super(key: key);
 
@@ -23,12 +24,14 @@ class AuthTextField extends StatelessWidget {
   final int maxLines;
   final bool readOnly;
   final String? initialValue;
+  final bool autofocus;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return TextFormField(
       readOnly: readOnly,
       maxLines: maxLines,
+      autofocus: autofocus,
       cursorColor: theme.colorScheme.secondary,
       keyboardType: TextInputType.emailAddress,
       cursorRadius: Radius.circular(16.0),
