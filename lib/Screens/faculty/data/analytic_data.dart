@@ -6,8 +6,9 @@ class FeedBack {
 }
 
 class FeedbackAnalytics {
-  final List? count;
-  final String? que;
+  final String feedbackOf;
+  final List? analytic;
+  final List? que;
 
-  FeedbackAnalytics({required this.que, required this.count});
+  FeedbackAnalytics({this.que, this.analytic, required this.feedbackOf});
 }

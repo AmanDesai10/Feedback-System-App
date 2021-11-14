@@ -18,6 +18,7 @@ Future<List> getfacultyFeedbackList() async {
       Uri.parse(
           "https://sgp-feedback-system.herokuapp.com/api/getfeedbacklist?institute=$institute&department=$dept&sem=$sem"),
       headers: {'Authorization': 'Bearer $token'});
+  print(feedbackListResponse.statusCode);
 
   return jsonDecode(feedbackListResponse.body);
 }

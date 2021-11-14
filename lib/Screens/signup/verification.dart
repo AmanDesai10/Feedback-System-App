@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:feedsys/Screens/home/forward_category.dart';
 import 'package:feedsys/Screens/home/homeScreen.dart';
+import 'package:feedsys/Screens/login/loginscreen.dart';
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -245,9 +246,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        CategoryForwarding(
-                                                            widget.role)),
+                                                        LoginScreen()),
                                                 (route) => false);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Verified!! Now please Login to proceed")));
                                           } else if (response.statusCode ==
                                               401) {
                                             errorController!

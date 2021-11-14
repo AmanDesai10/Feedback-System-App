@@ -7,9 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FacultyAnalyticsTabView extends StatefulWidget {
-  const FacultyAnalyticsTabView({Key? key, required this.title})
+  const FacultyAnalyticsTabView(
+      {Key? key,
+      required this.title,
+      required this.que,
+      required this.analytics})
       : super(key: key);
   final String title;
+  final List analytics;
+  final List que;
   @override
   _FacultyAnalyticsTabViewState createState() =>
       _FacultyAnalyticsTabViewState();
@@ -43,6 +49,8 @@ class _FacultyAnalyticsTabViewState extends State<FacultyAnalyticsTabView> {
         ),
         body: FacultyAnalyticsScreen(
           title: widget.title,
+          que: widget.que,
+          analytics: widget.analytics,
         ),
       ),
     );

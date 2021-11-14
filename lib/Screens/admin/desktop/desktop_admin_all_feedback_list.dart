@@ -925,6 +925,12 @@ class _DesktopAdminAllFeedbackListState
                                         GestureDetector(
                                           onTap: () async {
                                             if (checkdetails()) {
+                                              String url = _tabController
+                                                          .index ==
+                                                      1
+                                                  ? 'https://sgp-feedback-system.herokuapp.com/api/courseFeedback'
+                                                  : 'https://sgp-feedback-system.herokuapp.com/api/newFeedback';
+
                                               setState(() {
                                                 dialogload = true;
                                               });
@@ -961,8 +967,7 @@ class _DesktopAdminAllFeedbackListState
                                                     .toString()
                                               }));
                                               var response = await http.post(
-                                                  Uri.parse(
-                                                      "https://sgp-feedback-system.herokuapp.com/api/newFeedback"),
+                                                  Uri.parse(url),
                                                   headers: {
                                                     'Content-Type':
                                                         'application/json',
@@ -979,8 +984,11 @@ class _DesktopAdminAllFeedbackListState
                                                       'institute': userCollege,
                                                       'department': dept
                                                     },
-                                                    'feedbackOf':
-                                                        facultyid[faculty],
+                                                    'feedbackOf': _tabController
+                                                                .index ==
+                                                            1
+                                                        ? courseid[faculty]
+                                                        : facultyid[faculty],
                                                     'createdBy': userid,
                                                     'feedbackQuestions':
                                                         dialogquestionid[

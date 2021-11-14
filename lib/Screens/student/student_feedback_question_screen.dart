@@ -30,6 +30,7 @@ class _StudentFeedbackQuestionScreenState
     extends State<StudentFeedbackQuestionScreen> {
   final Map<String, List<int>> a = {};
   final Map<String, int> selectedOption = {};
+  bool load = false;
 
   @override
   void initState() {
@@ -217,6 +218,9 @@ class _StudentFeedbackQuestionScreenState
               onTap: selectedOption.containsValue(0)
                   ? null
                   : () async {
+                      setState(() {
+                        load = true;
+                      });
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
                       String? userid = preferences.getString('_id');
@@ -239,6 +243,9 @@ class _StudentFeedbackQuestionScreenState
                             'userId': userid,
                             'ans': selectedOption.values.toList()
                           }));
+                      setState(() {
+                        load = true;
+                      });
                       log(response.body.toString());
                       if (response.statusCode == 200) {
                         widget.callback(true);
@@ -262,16 +269,30 @@ class _StudentFeedbackQuestionScreenState
                     color: selectedOption.containsValue(0)
                         ? Colors.grey
                         : Color(0xff4A5CFF)),
-                child: Center(
-                  child: Text(
-                    'Submit',
-                    style: theme.textTheme.headline6!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                child: load
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: kWhite,
+                                strokeWidth: 3,
+                              )),
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          'Submit',
+                          style: theme.textTheme.headline6!.copyWith(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
               ),
             )
           ],

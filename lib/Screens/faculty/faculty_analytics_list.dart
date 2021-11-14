@@ -35,6 +35,17 @@ class _FacultyAnalyticsListScreenState
             "https://sgp-feedback-system.herokuapp.com/api/feedbackAns?id=$id"),
         headers: {'Authorization': 'Bearer $token'});
 
+    List responseList = jsonDecode(response.body);
+    print(responseList);
+    responseList.forEach((element) {
+      feedbackAnalyticsList.add(FeedbackAnalytics(
+          feedbackOf: element['feedFor'],
+          que: element['questions'],
+          analytic: element['analytics']));
+    });
+    setState(() {
+      load = false;
+    });
     // log(response.body.toString());
     // log(jsonDecode(response.body).length.toString());
 
@@ -49,10 +60,6 @@ class _FacultyAnalyticsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    List<FeedBack> feedbackData = [
-      FeedBack(title: '19IT', description: 'Faculty feedback'),
-      FeedBack(title: '20IT', description: 'Faculty feedback'),
-    ];
     final Size size = MediaQuery.of(context).size;
     final ThemeData theme = Theme.of(context);
     return Scaffold(
@@ -95,16 +102,28 @@ class _FacultyAnalyticsListScreenState
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: List.generate(
-                                feedbackData.length,
+                                feedbackAnalyticsList.length,
                                 (index) => GestureDetector(
                                       onTap: () {
+                                        print(feedbackAnalyticsList[index]
+                                            .analytic![0]['1']);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     FacultyAnalyticsTabView(
-                                                      title: feedbackData[index]
-                                                          .title!,
+                                                      title:
+                                                          feedbackAnalyticsList[
+                                                                  index]
+                                                              .feedbackOf,
+                                                      que:
+                                                          feedbackAnalyticsList[
+                                                                  index]
+                                                              .que!,
+                                                      analytics:
+                                                          feedbackAnalyticsList[
+                                                                  index]
+                                                              .analytic!,
                                                     )));
                                       },
                                       child: Container(
@@ -134,8 +153,9 @@ class _FacultyAnalyticsListScreenState
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      feedbackData[index]
-                                                          .title!,
+                                                      feedbackAnalyticsList[
+                                                              index]
+                                                          .feedbackOf,
                                                       style: theme
                                                           .textTheme.headline6,
                                                     ),
@@ -143,8 +163,9 @@ class _FacultyAnalyticsListScreenState
                                                       height: 16.0,
                                                     ),
                                                     Text(
-                                                      feedbackData[index]
-                                                          .description!,
+                                                      feedbackAnalyticsList[
+                                                              index]
+                                                          .feedbackOf,
                                                     )
                                                   ],
                                                 ),
