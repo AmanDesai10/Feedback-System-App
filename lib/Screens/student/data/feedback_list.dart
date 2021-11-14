@@ -42,12 +42,22 @@ Future<List> getcourseFeedbackList() async {
   return jsonDecode(feedbackListResponse.body);
 }
 
-Future<List> getAllFeedbackList() async {
+Future<List> getAllFacultyFeedbackList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? token = preferences.getString('token');
   var feedbackListResponse = await http.get(
       Uri.parse(
           "https://sgp-feedback-system.herokuapp.com/api/getfeedbacklist"),
+      headers: {'Authorization': 'Bearer $token'});
+
+  return jsonDecode(feedbackListResponse.body);
+}
+
+Future<List> getAllCourseFeedbackList() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String? token = preferences.getString('token');
+  var feedbackListResponse = await http.get(
+      Uri.parse("https://sgp-feedback-system.herokuapp.com/api/courseFeedback"),
       headers: {'Authorization': 'Bearer $token'});
 
   return jsonDecode(feedbackListResponse.body);

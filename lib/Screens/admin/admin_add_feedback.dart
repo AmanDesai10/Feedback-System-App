@@ -618,7 +618,7 @@ class _AdminAddFeedbackState extends State<AdminAddFeedback> {
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.0),
-                    color: checkdetails() ? Color(0xff4A5CFF) : Colors.grey),
+                    color: checkdetails() ? kPrimary : Colors.grey),
                 child: load
                     ? Row(
                         mainAxisSize: MainAxisSize.min,

@@ -1,7 +1,7 @@
 import 'package:feedsys/Screens/admin/admin_navigation.dart';
+import 'package:feedsys/Screens/admin/admin_view.dart';
 import 'package:feedsys/Screens/faculty/faculty_navigation.dart';
 import 'package:feedsys/Screens/home/homeScreen.dart';
-import 'package:feedsys/Screens/student/student_navigation.dart';
 import 'package:feedsys/Screens/student/student_view.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,7 +13,7 @@ Widget CategoryForwarding(String role) {
     case 'faculty':
       return FacultyNavigation();
     case 'admin':
-      return AdminNavigation();
+      return AdminView();
     default:
       return HomeScreen(role: role);
   }

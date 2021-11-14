@@ -34,7 +34,8 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList> {
           department: element['feedbackFor']['department'],
           institute: element['feedbackFor']['institute'],
           description: element['description'],
-          questionTemplate: element['feedbackQuestions']['_id'],
+          questionTemplateId: element['feedbackQuestions']['_id'],
+          questionTemplate: element['feedbackQuestions']['name'],
           sem: element['feedbackFor']['sem'],
           year: element['feedbackFor']['year'],
           feedbackOf: element['feedbackOf']['userName'],
@@ -49,7 +50,7 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList> {
     setState(() {
       load = true;
     });
-    feedbacklist = await getAllFeedbackList();
+    feedbacklist = await getAllFacultyFeedbackList();
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
@@ -140,7 +141,7 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList> {
                                                           templateName: questionid[
                                                               feedbackData[
                                                                       index]
-                                                                  .questionTemplate]!,
+                                                                  .questionTemplateId]!,
                                                         )));
                                           },
                                           child: Container(
@@ -179,6 +180,9 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList> {
                                                               .name!,
                                                           style: theme.textTheme
                                                               .headline6,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                         SizedBox(
                                                           height: 16.0,

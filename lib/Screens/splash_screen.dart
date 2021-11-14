@@ -1,3 +1,4 @@
+import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -6,8 +7,20 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
-      // child: Image.asset('images/icon1.png'),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 45,
+            width: 45,
+            child: CircularProgressIndicator(
+              color: kPrimary,
+            ),
+          )
+        ],
+        // child: Image.asset('images/icon1.png'),
+      ),
     );
   }
 }

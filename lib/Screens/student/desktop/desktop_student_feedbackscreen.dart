@@ -468,20 +468,18 @@ class _DesktopStudentFeedbackScreenState
 }
 
 class FeedbackTableText extends StatelessWidget {
-  const FeedbackTableText({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
+  const FeedbackTableText({Key? key, required this.text, this.color})
+      : super(key: key);
 
   final String text;
-
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return Text(
       text,
-      style: theme.textTheme.headline6!.copyWith(fontSize: 16.0),
+      style: theme.textTheme.headline6!.copyWith(fontSize: 16.0, color: color),
       textAlign: TextAlign.center,
     );
   }

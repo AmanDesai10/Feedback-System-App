@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:feedsys/Screens/admin/admin_add_feedback.dart';
 import 'package:feedsys/Screens/admin/admin_all_feedback_list.dart';
 import 'package:feedsys/Screens/admin/admin_question_list.dart';
-import 'package:feedsys/Screens/admin/admin_question_template.dart';
+import 'package:feedsys/Screens/admin/admin_add_question_template.dart';
 
 import 'package:feedsys/constants/colors.dart';
 import 'package:flutter/material.dart';

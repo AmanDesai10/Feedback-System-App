@@ -6,23 +6,31 @@ import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/components/validators.dart';
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/utils/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+typedef BoolValue = void Function(bool);
+
 class AdminQuestionsView extends StatefulWidget {
   final QuestionTemplateDetials data;
-  const AdminQuestionsView({Key? key, required this.data}) : super(key: key);
+  final BoolValue? callback;
+
+  const AdminQuestionsView({Key? key, required this.data, this.callback})
+      : super(key: key);
 
   @override
   _AdminQuestionsViewState createState() => _AdminQuestionsViewState();
 }
 
 class _AdminQuestionsViewState extends State<AdminQuestionsView> {
+  bool load = false;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
+    final bool isDesktop = DeviceScreen.isDesktop(context);
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
@@ -41,6 +49,62 @@ class _AdminQuestionsViewState extends State<AdminQuestionsView> {
           'Questions',
           style: theme.textTheme.headline6,
         ),
+        actions: isDesktop
+            ? [
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      load = true;
+                    });
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    String? token = preferences.getString('token');
+                    var response = await http.delete(
+                        Uri.parse(
+                            "https://sgp-feedback-system.herokuapp.com/api/feedbackQue?id=${widget.data.templateId}"),
+                        headers: {'Authorization': 'Bearer $token'});
+                    log(response.statusCode.toString());
+                    setState(() {
+                      load = false;
+                    });
+                    if (isDesktop) widget.callback!(true);
+
+                    Navigator.pop(context);
+
+                    if (response.statusCode == 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("${jsonDecode(response.body)['message']}")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("${jsonDecode(response.body)['message']}")));
+                    }
+                  },
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(right: 32.0, top: 10.0, bottom: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.red),
+                    child: load
+                        ? Center(
+                            child: SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
+                                color: kWhite,
+                              ),
+                            ),
+                          )
+                        : Icon(Icons.delete_outline_outlined),
+                  ),
+                )
+              ]
+            : [],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 32.0)
@@ -72,121 +136,6 @@ class _AdminQuestionsViewState extends State<AdminQuestionsView> {
                           TitleText(
                             text: 'Questions',
                           ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(right: 8.0),
-                          //   child: GestureDetector(
-                          //     onTap: () {
-                          //       showDialog(
-                          //           barrierDismissible: false,
-                          //           context: context,
-                          //           builder: (context) => AlertDialog(
-                          //                 content: Form(
-                          //                   key: _formKey,
-                          //                   child: Column(
-                          //                     crossAxisAlignment:
-                          //                         CrossAxisAlignment.start,
-                          //                     mainAxisSize: MainAxisSize.min,
-                          //                     children: [
-                          //                       TitleText(text: 'Question'),
-                          //                       SizedBox(
-                          //                         height: 12.0,
-                          //                       ),
-                          //                       Container(
-                          //                         width: double.maxFinite,
-                          //                         child: AuthTextField(
-                          //                             validator: fieldValidator,
-                          //                             hintText:
-                          //                                 'Enter question',
-                          //                             onChanged: (value) {
-                          //                               question = value;
-                          //                               setState(() {});
-                          //                             }),
-                          //                       ),
-                          //                     ],
-                          //                   ),
-                          //                 ),
-                          //                 actions: [
-                          //                   Padding(
-                          //                     padding:
-                          //                         const EdgeInsets.all(14.0),
-                          //                     child: Row(
-                          //                       mainAxisAlignment:
-                          //                           MainAxisAlignment.end,
-                          //                       children: [
-                          //                         GestureDetector(
-                          //                           onTap: () {
-                          //                             Navigator.pop(context);
-                          //                           },
-                          //                           child: Container(
-                          //                             padding:
-                          //                                 EdgeInsets.symmetric(
-                          //                                     horizontal: 16.0,
-                          //                                     vertical: 10.0),
-                          //                             decoration: BoxDecoration(
-                          //                                 borderRadius:
-                          //                                     BorderRadius
-                          //                                         .circular(
-                          //                                             10.0),
-                          //                                 color: kWhite),
-                          //                             child: Text(
-                          //                               'Cancel',
-                          //                               style: theme.textTheme
-                          //                                   .headline6!
-                          //                                   .copyWith(
-                          //                                       fontSize: 14.0,
-                          //                                       color:
-                          //                                           kPrimary),
-                          //                             ),
-                          //                           ),
-                          //                         ),
-                          //                         SizedBox(
-                          //                           width: 18.0,
-                          //                         ),
-                          //                         GestureDetector(
-                          //                           onTap: () {
-                          //                             if (_formKey.currentState!
-                          //                                 .validate()) {
-                          //                               questionsList
-                          //                                   .add(question!);
-
-                          //                               setState(() {});
-                          //                               Navigator.pop(context);
-                          //                             }
-                          //                           },
-                          //                           child: Container(
-                          //                             padding:
-                          //                                 EdgeInsets.symmetric(
-                          //                                     horizontal: 16.0,
-                          //                                     vertical: 10.0),
-                          //                             decoration: BoxDecoration(
-                          //                                 borderRadius:
-                          //                                     BorderRadius
-                          //                                         .circular(
-                          //                                             10.0),
-                          //                                 color: kPrimary),
-                          //                             child: Text(
-                          //                               'Add',
-                          //                               style: theme.textTheme
-                          //                                   .headline6!
-                          //                                   .copyWith(
-                          //                                       fontSize: 14.0,
-                          //                                       color: kWhite),
-                          //                             ),
-                          //                           ),
-                          //                         ),
-                          //                       ],
-                          //                     ),
-                          //                   )
-                          //                 ],
-                          //               ));
-                          //     },
-                          //     child: Icon(
-                          //       Icons.add,
-                          //       color: kPrimary,
-                          //       size: 32.0,
-                          //     ),
-                          //   ),
-                          // )
                         ],
                       ),
                       SizedBox(
@@ -247,78 +196,75 @@ class _AdminQuestionsViewState extends State<AdminQuestionsView> {
                 ],
               ),
             )),
-            // SizedBox(
-            //   height: 16.0,
-            // ),
-            // GestureDetector(
-            //   onTap: () async {
-            //     SharedPreferences preferences =
-            //         await SharedPreferences.getInstance();
-            //     String? userid = preferences.getString('_id');
-            //     setState(() {
-            //       load = true;
-            //     });
-            //     log(jsonEncode({
-            //       "name": templateName,
-            //       "questions": questionsList,
-            //       "createdBy": userid
-            //     }));
-            //     var response = await http.post(
-            //         Uri.parse(
-            //             "https://sgp-feedback-system.herokuapp.com/api/addfeedbackque"),
-            //         headers: {'Content-Type': 'application/json'},
-            //         body: jsonEncode({
-            //           "name": templateName,
-            //           "questions": questionsList,
-            //           "createdBy": userid
-            //         }));
-            //     setState(() {
-            //       load = false;
-            //     });
-            //     if (response.statusCode == 200) {
-            //       Navigator.pop(context);
-            //       ScaffoldMessenger.of(context).showSnackBar(
-            //           SnackBar(content: Text("Question template created")));
-            //     } else {
-            //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            //           content:
-            //               Text("${jsonDecode(response.body)['message']}")));
-            //     }
-            //   },
-            //   child: Container(
-            //     height: 50,
-            //     // padding: EdgeInsets.symmetric(vertical: 14),
-            //     width: size.width,
-            //     margin: EdgeInsets.symmetric(horizontal: 20),
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(16.0),
-            //         color: checkdetails() ? Color(0xff4A5CFF) : Colors.grey),
-            //     child: load
-            //         ? Row(
-            //             mainAxisSize: MainAxisSize.min,
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               SizedBox(
-            //                   height: 24,
-            //                   width: 24,
-            //                   child: CircularProgressIndicator(
-            //                     color: kWhite,
-            //                     strokeWidth: 3,
-            //                   )),
-            //             ],
-            //           )
-            //         : Center(
-            //             child: Text(
-            //               'Create',
-            //               style: theme.textTheme.headline6!.copyWith(
-            //                   fontSize: 18,
-            //                   fontWeight: FontWeight.bold,
-            //                   color: Colors.white),
-            //               textAlign: TextAlign.center,
-            //             ),
-            //           ),
-            //   ),
-            // )
+            if (!isDesktop) ...[
+              SizedBox(
+                height: 24.0,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    load = true;
+                  });
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  String? token = preferences.getString('token');
+                  var response = await http.delete(
+                      Uri.parse(
+                          "https://sgp-feedback-system.herokuapp.com/api/feedbackQue?id=${widget.data.templateId}"),
+                      headers: {'Authorization': 'Bearer $token'});
+                  log(response.statusCode.toString());
+                  setState(() {
+                    load = false;
+                  });
+                  widget.callback!(true);
+
+                  Navigator.pop(context);
+
+                  if (response.statusCode == 200) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text("${jsonDecode(response.body)['message']}")));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text("${jsonDecode(response.body)['message']}")));
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  // padding: EdgeInsets.symmetric(vertical: 14),
+                  width: size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.red),
+                  child: load
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: kWhite,
+                                  strokeWidth: 3,
+                                )),
+                          ],
+                        )
+                      : Center(
+                          child: Text(
+                            'Delete',
+                            style: theme.textTheme.headline6!.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                ),
+              )
+            ]
           ],
         ),
       ),

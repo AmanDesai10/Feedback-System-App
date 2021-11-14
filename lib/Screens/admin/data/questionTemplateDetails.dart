@@ -6,11 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class QuestionTemplateDetials {
   final String? name;
   final List question;
+  final String templateId;
 
-  QuestionTemplateDetials({
-    required this.name,
-    required this.question,
-  });
+  QuestionTemplateDetials(
+      {required this.name, required this.question, required this.templateId});
 }
 
 Future<List> getAlltemplateList() async {

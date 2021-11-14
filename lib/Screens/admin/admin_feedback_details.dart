@@ -6,6 +6,7 @@ import 'package:feedsys/Screens/admin/data/feedbackDetails.dart';
 import 'package:feedsys/Screens/student/student_profile.dart';
 import 'package:feedsys/components/textfileds.dart';
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/utils/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,7 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final bool isDesktop = DeviceScreen.isDesktop(context);
     final Size size = MediaQuery.of(context).size;
 
     String? feedbackName = widget.data.name;
@@ -59,9 +61,63 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
         ),
         backgroundColor: kBackgroundColor,
         title: Text(
-          'New FeedBack',
+          'FeedBack Detail',
           style: theme.textTheme.headline6,
         ),
+        actions: isDesktop
+            ? [
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      load = true;
+                    });
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    String? token = preferences.getString('token');
+                    var response = await http.delete(
+                        Uri.parse(
+                            "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                        headers: {'Authorization': 'Bearer $token'});
+                    log(response.statusCode.toString());
+                    setState(() {
+                      load = false;
+                    });
+                    Navigator.pop(context);
+
+                    if (response.statusCode == 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("${jsonDecode(response.body)['message']}")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("${jsonDecode(response.body)['message']}")));
+                    }
+                  },
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(right: 32.0, top: 10.0, bottom: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.red),
+                    child: load
+                        ? Center(
+                            child: SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
+                                color: kWhite,
+                              ),
+                            ),
+                          )
+                        : Icon(Icons.delete_outline_outlined),
+                  ),
+                )
+              ]
+            : [],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 32.0)
@@ -218,76 +274,78 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 24.0,
-            ),
-            GestureDetector(
-              onTap: () async {
-                setState(() {
-                  load = true;
-                });
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                String? token = preferences.getString('token');
-                var response = await http.delete(
-                    Uri.parse(
-                        "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
-                    headers: {'Authorization': 'Bearer $token'});
-                log(response.statusCode.toString());
-                setState(() {
-                  load = false;
-                });
-                Navigator.pop(context);
-                Navigator.pop(context);
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdminAllFeedbackList()));
-                if (response.statusCode == 200) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text("${jsonDecode(response.body)['message']}")));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text("${jsonDecode(response.body)['message']}")));
-                }
-              },
-              child: Container(
-                height: 50,
-                // padding: EdgeInsets.symmetric(vertical: 14),
-                width: size.width,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0),
-                    color: Colors.red),
-                child: load
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(
-                                color: kWhite,
-                                strokeWidth: 3,
-                              )),
-                        ],
-                      )
-                    : Center(
-                        child: Text(
-                          'Delete',
-                          style: theme.textTheme.headline6!.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+            if (!isDesktop) ...[
+              SizedBox(
+                height: 24.0,
               ),
-            )
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    load = true;
+                  });
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  String? token = preferences.getString('token');
+                  var response = await http.delete(
+                      Uri.parse(
+                          "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                      headers: {'Authorization': 'Bearer $token'});
+                  log(response.statusCode.toString());
+                  setState(() {
+                    load = false;
+                  });
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminAllFeedbackList()));
+                  if (response.statusCode == 200) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text("${jsonDecode(response.body)['message']}")));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text("${jsonDecode(response.body)['message']}")));
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  // padding: EdgeInsets.symmetric(vertical: 14),
+                  width: size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.red),
+                  child: load
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: kWhite,
+                                  strokeWidth: 3,
+                                )),
+                          ],
+                        )
+                      : Center(
+                          child: Text(
+                            'Delete',
+                            style: theme.textTheme.headline6!.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                ),
+              )
+            ]
           ],
         ),
       ),
