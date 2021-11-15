@@ -52,35 +52,38 @@ class _AdminQuestionsViewState extends State<AdminQuestionsView> {
         actions: isDesktop
             ? [
                 GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      load = true;
-                    });
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    String? token = preferences.getString('token');
-                    var response = await http.delete(
-                        Uri.parse(
-                            "https://sgp-feedback-system.herokuapp.com/api/feedbackQue?id=${widget.data.templateId}"),
-                        headers: {'Authorization': 'Bearer $token'});
-                    log(response.statusCode.toString());
-                    setState(() {
-                      load = false;
-                    });
-                    if (isDesktop) widget.callback!(true);
+                  onTap: widget.data.name == 'default' ||
+                          widget.data.name == 'default course'
+                      ? null
+                      : () async {
+                          setState(() {
+                            load = true;
+                          });
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          String? token = preferences.getString('token');
+                          var response = await http.delete(
+                              Uri.parse(
+                                  "https://sgp-feedback-system.herokuapp.com/api/feedbackQue?id=${widget.data.templateId}"),
+                              headers: {'Authorization': 'Bearer $token'});
+                          log(response.statusCode.toString());
+                          setState(() {
+                            load = false;
+                          });
+                          if (isDesktop) widget.callback!(true);
 
-                    Navigator.pop(context);
+                          Navigator.pop(context);
 
-                    if (response.statusCode == 200) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text("${jsonDecode(response.body)['message']}")));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text("${jsonDecode(response.body)['message']}")));
-                    }
-                  },
+                          if (response.statusCode == 200) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "${jsonDecode(response.body)['message']}")));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "${jsonDecode(response.body)['message']}")));
+                          }
+                        },
                   child: Container(
                     margin:
                         EdgeInsets.only(right: 32.0, top: 10.0, bottom: 10.0),
@@ -88,7 +91,10 @@ class _AdminQuestionsViewState extends State<AdminQuestionsView> {
                         EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.red),
+                        color: widget.data.name == 'default' ||
+                                widget.data.name == 'default course'
+                            ? Colors.grey
+                            : Colors.red),
                     child: load
                         ? Center(
                             child: SizedBox(

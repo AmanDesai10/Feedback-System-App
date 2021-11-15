@@ -27,6 +27,13 @@ class _FacultyAnalyticsScreenState extends State<FacultyAnalyticsScreen> {
               (index) => Container(
                     margin: EdgeInsets.only(bottom: 32.0),
                     child: SfCircularChart(
+                      palette: [
+                        Color.fromRGBO(255, 99, 132, 0.1),
+                        Color.fromRGBO(54, 162, 235, 0.1),
+                        Color.fromRGBO(255, 206, 86, 1),
+                        Color.fromRGBO(75, 192, 192, 1),
+                        Color.fromRGBO(153, 102, 255, 1)
+                      ],
                       title: ChartTitle(
                           text: widget.que[index],
                           textStyle: TextStyle(fontWeight: FontWeight.bold)),

@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               isObscure: isObscure,
                               suffixIcon: GestureDetector(
                                 child: Icon(
-                                  isObscure
+                                  !isObscure
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colors.grey,

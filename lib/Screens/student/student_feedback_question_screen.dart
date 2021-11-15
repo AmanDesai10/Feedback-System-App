@@ -274,7 +274,6 @@ class _StudentFeedbackQuestionScreenState
                         : Color(0xff4A5CFF)),
                 child: load
                     ? Row(
-                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(

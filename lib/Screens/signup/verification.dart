@@ -185,7 +185,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                                       'application/json'
                                                 },
                                                 body: json.encode({
-                                                  'email': widget.email,
+                                                  'email': widget.email
+                                                      .toLowerCase(),
                                                   'otp': 0,
                                                   'reSend': resend
                                                 }));
@@ -232,7 +233,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                                     'application/json'
                                               },
                                               body: json.encode({
-                                                'email': widget.email,
+                                                'email':
+                                                    widget.email.toLowerCase(),
                                                 'otp': otpController.text,
                                                 'reSend': resend
                                               }));
