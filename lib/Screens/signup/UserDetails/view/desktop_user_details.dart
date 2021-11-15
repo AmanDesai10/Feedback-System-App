@@ -16,7 +16,11 @@ class _DesktopDetailSelectionState extends State<DesktopDetailSelection> {
   final InstituteData _instituteData = InstituteData();
   List<String> departmentList = [];
   String? userCollege;
+  List<int> yearList = [2016, 2017, 2018, 2019, 2020, 2021];
+  List<int> semList = [1, 2, 3, 4, 5, 6, 7, 8];
   String? dept;
+  int? year;
+  int? sem;
   int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
@@ -111,111 +115,265 @@ class _DesktopDetailSelectionState extends State<DesktopDetailSelection> {
                             SizedBox(
                               height: 32.0,
                             ),
-                            UserDetailTitle(
-                              title: 'College',
-                            ),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            Container(
-                              width: 380,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 14.0, vertical: 4.0),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  border: Border.all(color: Colors.grey)),
-                              child: d.DropdownButtonHideUnderline(
-                                child: d.DropdownButton<String>(
-                                  borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(12),
-                                  ),
-                                  focusColor: Colors.white,
-                                  value: userCollege,
-                                  icon: Icon(Icons.expand_more_outlined),
-                                  style: theme.textTheme.headline6!
-                                      .copyWith(fontSize: 16.0),
-                                  iconEnabledColor: Colors.black,
-                                  items: _instituteData.collegeList
-                                      .map<d.DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return d.DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: theme.textTheme.headline6!
-                                            .copyWith(fontSize: 16.0),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    UserDetailTitle(
+                                      title: 'College',
+                                    ),
+                                    SizedBox(
+                                      height: 16.0,
+                                    ),
+                                    Container(
+                                      width: 380,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14.0, vertical: 4.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                      child: d.DropdownButtonHideUnderline(
+                                        child: d.DropdownButton<String>(
+                                          borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(12),
+                                          ),
+                                          focusColor: Colors.white,
+                                          value: userCollege,
+                                          icon:
+                                              Icon(Icons.expand_more_outlined),
+                                          style: theme.textTheme.headline6!
+                                              .copyWith(fontSize: 16.0),
+                                          iconEnabledColor: Colors.black,
+                                          items: _instituteData.collegeList
+                                              .map<d.DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return d.DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: theme
+                                                    .textTheme.headline6!
+                                                    .copyWith(fontSize: 16.0),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          hint: Text(
+                                            "Select college",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              userCollege = value!;
+                                              dept = null;
+                                            });
+                                          },
+                                        ),
                                       ),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Select college",
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      userCollege = value!;
-                                      dept = null;
-                                    });
-                                  },
+                                    ),
+                                  ],
                                 ),
-                              ),
+                                SizedBox(
+                                  width: 100.0,
+                                ),
+                                if (selectedIndex == 0)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      UserDetailTitle(
+                                        title: 'Year',
+                                      ),
+                                      SizedBox(
+                                        height: 16.0,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 4.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            border:
+                                                Border.all(color: Colors.grey)),
+                                        child: d.DropdownButtonHideUnderline(
+                                          child: d.DropdownButton<int>(
+                                            menuMaxHeight: 175,
+                                            borderRadius: BorderRadius.vertical(
+                                              bottom: Radius.circular(12),
+                                            ),
+                                            focusColor: Colors.white,
+                                            value: year,
+                                            icon: Icon(
+                                                Icons.expand_more_outlined),
+                                            style: theme.textTheme.headline6!
+                                                .copyWith(fontSize: 16.0),
+                                            iconEnabledColor: Colors.black,
+                                            items: yearList
+                                                .map<d.DropdownMenuItem<int>>(
+                                                    (int value) {
+                                              return d.DropdownMenuItem<int>(
+                                                value: value,
+                                                child: Text(
+                                                  value.toString(),
+                                                  style: theme
+                                                      .textTheme.headline6!
+                                                      .copyWith(fontSize: 16.0),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            hint: Text(
+                                              "Select Year",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                year = value!;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              ],
                             ),
                             SizedBox(
                               height: 32.0,
                             ),
-                            UserDetailTitle(
-                              title: 'Department',
-                            ),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            Container(
-                              width: 380,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 14.0, vertical: 4.0),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  border: Border.all(color: Colors.grey)),
-                              child: d.DropdownButtonHideUnderline(
-                                child: d.DropdownButton<String>(
-                                  borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(12),
-                                  ),
-                                  focusColor: Colors.white,
-                                  value: dept,
-                                  icon: Icon(Icons.expand_more_outlined),
-                                  style: theme.textTheme.headline6!
-                                      .copyWith(fontSize: 16.0),
-                                  iconEnabledColor: Colors.black,
-                                  items: departmentList
-                                      .map<d.DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return d.DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: theme.textTheme.headline6!
-                                            .copyWith(fontSize: 16.0),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    UserDetailTitle(
+                                      title: 'Department',
+                                    ),
+                                    SizedBox(
+                                      height: 16.0,
+                                    ),
+                                    Container(
+                                      width: 380,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14.0, vertical: 4.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                      child: d.DropdownButtonHideUnderline(
+                                        child: d.DropdownButton<String>(
+                                          borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(12),
+                                          ),
+                                          focusColor: Colors.white,
+                                          value: dept,
+                                          icon:
+                                              Icon(Icons.expand_more_outlined),
+                                          style: theme.textTheme.headline6!
+                                              .copyWith(fontSize: 16.0),
+                                          iconEnabledColor: Colors.black,
+                                          items: departmentList
+                                              .map<d.DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return d.DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: theme
+                                                    .textTheme.headline6!
+                                                    .copyWith(fontSize: 16.0),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          hint: Text(
+                                            "Select department",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              dept = value!;
+                                            });
+                                          },
+                                        ),
                                       ),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Select department",
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      dept = value!;
-                                    });
-                                  },
+                                    ),
+                                  ],
                                 ),
-                              ),
+                                SizedBox(
+                                  width: 100.0,
+                                ),
+                                if (selectedIndex == 0)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      UserDetailTitle(
+                                        title: 'Semester',
+                                      ),
+                                      SizedBox(
+                                        height: 16.0,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 4.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            border:
+                                                Border.all(color: Colors.grey)),
+                                        child: d.DropdownButtonHideUnderline(
+                                          child: d.DropdownButton<int>(
+                                            menuMaxHeight: 175,
+                                            borderRadius: BorderRadius.vertical(
+                                              bottom: Radius.circular(12),
+                                            ),
+                                            focusColor: Colors.white,
+                                            value: sem,
+                                            icon: Icon(
+                                                Icons.expand_more_outlined),
+                                            style: theme.textTheme.headline6!
+                                                .copyWith(fontSize: 16.0),
+                                            iconEnabledColor: Colors.black,
+                                            items: semList
+                                                .map<d.DropdownMenuItem<int>>(
+                                                    (int value) {
+                                              return d.DropdownMenuItem<int>(
+                                                value: value,
+                                                child: Text(
+                                                  value.toString(),
+                                                  style: theme
+                                                      .textTheme.headline6!
+                                                      .copyWith(fontSize: 16.0),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            hint: Text(
+                                              "Select Sem",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                sem = value!;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              ],
                             ),
                             SizedBox(
                               height: 32.0,
@@ -232,22 +390,42 @@ class _DesktopDetailSelectionState extends State<DesktopDetailSelection> {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: size.height * 0.15),
                   child: GestureDetector(
-                    onTap: selectedIndex != -1 &&
-                            dept != null &&
-                            userCollege != null
-                        ? () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignupScreen(
-                                          role: _instituteData
-                                              .categoryList[selectedIndex]
-                                              .toLowerCase(),
-                                          institute: userCollege!,
-                                          department: dept!,
-                                        )));
-                          }
-                        : null,
+                    onTap: selectedIndex == 0
+                        ? dept != null &&
+                                userCollege != null &&
+                                year != null &&
+                                sem != null
+                            ? () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignupScreen(
+                                              role: _instituteData
+                                                  .categoryList[selectedIndex]
+                                                  .toLowerCase(),
+                                              institute: userCollege!,
+                                              department: dept!,
+                                              sem: sem,
+                                              year: year,
+                                            )));
+                              }
+                            : () {}
+                        : selectedIndex != -1 &&
+                                dept != null &&
+                                userCollege != null
+                            ? () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignupScreen(
+                                              role: _instituteData
+                                                  .categoryList[selectedIndex]
+                                                  .toLowerCase(),
+                                              institute: userCollege!,
+                                              department: dept!,
+                                            )));
+                              }
+                            : null,
                     child: Container(
                       width: size.width > 450 ? 450 : null,
                       margin: EdgeInsets.symmetric(horizontal: 5),
@@ -261,11 +439,18 @@ class _DesktopDetailSelectionState extends State<DesktopDetailSelection> {
                             ),
                           ],
                           borderRadius: BorderRadius.circular(16.0),
-                          color: selectedIndex != -1 &&
-                                  dept != null &&
-                                  userCollege != null
-                              ? kPrimary
-                              : Colors.grey),
+                          color: selectedIndex == 0
+                              ? dept != null &&
+                                      userCollege != null &&
+                                      year != null &&
+                                      sem != null
+                                  ? kPrimary
+                                  : Colors.grey
+                              : selectedIndex != -1 &&
+                                      dept != null &&
+                                      userCollege != null
+                                  ? kPrimary
+                                  : Colors.grey),
                       child: Text(
                         'Next',
                         style: theme.textTheme.headline6!.copyWith(
