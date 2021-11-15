@@ -12,3 +12,11 @@ class FeedbackAnalytics {
 
   FeedbackAnalytics({this.que, this.analytic, required this.feedbackOf});
 }
+
+class Courses {
+  final String id;
+  final String name;
+  final String code;
+
+  Courses({required this.id, required this.name, required this.code});
+}
