@@ -329,137 +329,151 @@ class _DesktopStudentFeedbackScreenState
                             ),
                           ),
                         )
-                      : Container(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                  coursefeedbackList.length,
-                                  (index) => Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              setState(() {
-                                                load = true;
-                                              });
-                                              SharedPreferences preferences =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              String? token = preferences
-                                                  .getString('token');
-                                              log(token.toString());
-                                              var response = await http.get(
-                                                  Uri.parse(
-                                                      'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${coursefeedbackList[index]['feedbackQuestions']['_id']}'),
-                                                  headers: {
-                                                    'Authorization':
-                                                        'Bearer $token'
+                      : coursefeedbackList.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No pending feedbacks!!',
+                                style: theme.textTheme.headline6,
+                              ),
+                            )
+                          : Container(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: List.generate(
+                                      coursefeedbackList.length,
+                                      (index) => Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    load = true;
                                                   });
-                                              // questions = jsonDecode(response.body)['questions'];
-                                              List questions =
-                                                  jsonDecode(response.body)[0]
+                                                  SharedPreferences
+                                                      preferences =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  String? token = preferences
+                                                      .getString('token');
+                                                  log(token.toString());
+                                                  var response = await http.get(
+                                                      Uri.parse(
+                                                          'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${coursefeedbackList[index]['feedbackQuestions']['_id']}'),
+                                                      headers: {
+                                                        'Authorization':
+                                                            'Bearer $token'
+                                                      });
+                                                  // questions = jsonDecode(response.body)['questions'];
+                                                  List questions = jsonDecode(
+                                                          response.body)[0]
                                                       ['questions'];
-                                              setState(() {
-                                                load = false;
-                                              });
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          StudentFeedbackQuestionScreen(
-                                                            isCourse: true,
-                                                            questions:
-                                                                questions,
-                                                            id: coursefeedbackData[
-                                                                    index]
-                                                                .feedbackId,
-                                                            callback: (value) {
-                                                              reload = value;
-                                                              setState(() {});
-                                                            },
-                                                          )));
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 20.0,
-                                                  horizontal: 12.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: FeedbackTableText(
-                                                          text:
-                                                              coursefeedbackData[
-                                                                      index]
-                                                                  .title)),
-                                                  SizedBox(
-                                                    width: 8.0,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: SizedBox(
-                                                      child: Text(
-                                                        coursefeedbackData[
-                                                                index]
-                                                            .desc,
-                                                        style: theme.textTheme
-                                                            .headline6!
-                                                            .copyWith(
-                                                                fontSize: 16.0),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.center,
+                                                  setState(() {
+                                                    load = false;
+                                                  });
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StudentFeedbackQuestionScreen(
+                                                                isCourse: true,
+                                                                questions:
+                                                                    questions,
+                                                                id: coursefeedbackData[
+                                                                        index]
+                                                                    .feedbackId,
+                                                                callback:
+                                                                    (value) {
+                                                                  reload =
+                                                                      value;
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                              )));
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 20.0,
+                                                      horizontal: 12.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: FeedbackTableText(
+                                                              text:
+                                                                  coursefeedbackData[
+                                                                          index]
+                                                                      .title)),
+                                                      SizedBox(
+                                                        width: 8.0,
                                                       ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 8.0,
-                                                  ),
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: FeedbackTableText(
-                                                          text:
-                                                              coursefeedbackData[
+                                                      Expanded(
+                                                        flex: 3,
+                                                        child: SizedBox(
+                                                          child: Text(
+                                                            coursefeedbackData[
+                                                                    index]
+                                                                .desc,
+                                                            style: theme
+                                                                .textTheme
+                                                                .headline6!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        16.0),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 8.0,
+                                                      ),
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: FeedbackTableText(
+                                                              text: coursefeedbackData[
                                                                       index]
                                                                   .createdBy)),
-                                                  SizedBox(
-                                                    width: 8.0,
-                                                  ),
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: FeedbackTableText(
-                                                          text:
-                                                              '${coursefeedbackData[index].days} days')),
-                                                  SizedBox(
-                                                    width: 8.0,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Center(
-                                                      child: Icon(
-                                                        Icons
-                                                            .open_in_new_outlined,
-                                                        color: Colors.blue,
+                                                      SizedBox(
+                                                        width: 8.0,
                                                       ),
-                                                    ),
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: FeedbackTableText(
+                                                              text:
+                                                                  '${coursefeedbackData[index].days} days')),
+                                                      SizedBox(
+                                                        width: 8.0,
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons
+                                                                .open_in_new_outlined,
+                                                            color: Colors.blue,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Divider(
-                                            color: Colors.grey,
-                                            thickness: 1.5,
-                                          )
-                                        ],
-                                      )),
+                                              Divider(
+                                                color: Colors.grey,
+                                                thickness: 1.5,
+                                              )
+                                            ],
+                                          )),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                 ]),
               ),
             )

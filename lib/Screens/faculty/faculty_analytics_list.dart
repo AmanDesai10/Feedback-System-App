@@ -53,8 +53,9 @@ class _FacultyAnalyticsListScreenState extends State<FacultyAnalyticsListScreen>
           'https://sgp-feedback-system.herokuapp.com/api/courses?institute=$institute&department=$department',
         ),
         headers: {'Authorization': 'Bearer $token'});
-
+    log(coursesResponse.body);
     // print(coursesResponse.body);
+
     List coursesList = jsonDecode(coursesResponse.body);
     coursesList.forEach((element) {
       courses.add(Courses(
@@ -76,9 +77,10 @@ class _FacultyAnalyticsListScreenState extends State<FacultyAnalyticsListScreen>
             que: element['questions'],
             analytic: element['analytics']));
       });
-      setState(() {
-        load = false;
-      });
+      setState(() {});
+    });
+    setState(() {
+      load = false;
     });
   }
 
@@ -95,6 +97,9 @@ class _FacultyAnalyticsListScreenState extends State<FacultyAnalyticsListScreen>
         Uri.parse(
             "https://sgp-feedback-system.herokuapp.com/api/feedbackAns?id=$id"),
         headers: {'Authorization': 'Bearer $token'});
+
+    print(response.body);
+
     List responseList = jsonDecode(response.body);
 
     // print(coursesList);
