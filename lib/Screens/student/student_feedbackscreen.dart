@@ -182,6 +182,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen>
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           StudentFeedbackQuestionScreen(
+                                                            isCourse: false,
                                                             questions:
                                                                 questions,
                                                             id: facultyfeedbackData[
@@ -284,7 +285,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen>
                                                   .getString('token');
                                               var response = await http.get(
                                                   Uri.parse(
-                                                      'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${facultyfeedbackList[index]['feedbackQuestions']['_id']}'),
+                                                      'https://sgp-feedback-system.herokuapp.com/api/getfeedbackque?id=${coursefeedbackList[index]['feedbackQuestions']['_id']}'),
                                                   headers: {
                                                     'Authorization':
                                                         'Bearer $token'
@@ -301,6 +302,7 @@ class _StudentFeedbackScreenState extends State<StudentFeedbackScreen>
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           StudentFeedbackQuestionScreen(
+                                                            isCourse: true,
                                                             questions:
                                                                 questions,
                                                             id: coursefeedbackData[

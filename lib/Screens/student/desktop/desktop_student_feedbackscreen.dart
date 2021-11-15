@@ -218,6 +218,8 @@ class _DesktopStudentFeedbackScreenState
                                                         MaterialPageRoute(
                                                             builder: (context) =>
                                                                 StudentFeedbackQuestionScreen(
+                                                                  isCourse:
+                                                                      false,
                                                                   questions:
                                                                       questions,
                                                                   id: facultyfeedbackData[
@@ -365,6 +367,7 @@ class _DesktopStudentFeedbackScreenState
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           StudentFeedbackQuestionScreen(
+                                                            isCourse: true,
                                                             questions:
                                                                 questions,
                                                             id: coursefeedbackData[

@@ -14,12 +14,14 @@ class StudentFeedbackQuestionScreen extends StatefulWidget {
       {Key? key,
       required this.questions,
       required this.id,
+      required this.isCourse,
       required this.callback})
       : super(key: key);
   BoolValue callback;
 
   final List questions;
   final String? id;
+  final bool isCourse;
 
   @override
   _StudentFeedbackQuestionScreenState createState() =>
@@ -221,6 +223,9 @@ class _StudentFeedbackQuestionScreenState
                       setState(() {
                         load = true;
                       });
+                      String url = widget.isCourse
+                          ? "https://sgp-feedback-system.herokuapp.com/api/courseFeedbackAns"
+                          : "https://sgp-feedback-system.herokuapp.com/api/feedbackAns";
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
                       String? userid = preferences.getString('_id');
@@ -231,9 +236,7 @@ class _StudentFeedbackQuestionScreenState
                         'userId': userid,
                         'ans': selectedOption.values.toList()
                       }));
-                      var response = await http.post(
-                          Uri.parse(
-                              "https://sgp-feedback-system.herokuapp.com/api/feedbackAns"),
+                      var response = await http.post(Uri.parse(url),
                           headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer $token'
