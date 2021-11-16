@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:feedsys/Screens/faculty/desktop/desktop_faculty_analytics_view.dart';
 import 'package:feedsys/Screens/faculty/faculty_analytics_view.dart';
 import 'package:feedsys/Screens/student/student_feedbackscreen.dart';
 import 'package:feedsys/constants/colors.dart';
+import 'package:feedsys/utils/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +27,7 @@ class _FacultyAnalyticsTabViewState extends State<FacultyAnalyticsTabView> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final bool isDesktop = DeviceScreen.isDesktop(context);
     final ThemeData theme = Theme.of(context);
     return DefaultTabController(
       length: 2,
@@ -47,11 +50,17 @@ class _FacultyAnalyticsTabViewState extends State<FacultyAnalyticsTabView> {
           ),
           backgroundColor: kWhite,
         ),
-        body: FacultyAnalyticsScreen(
-          title: widget.title,
-          que: widget.que,
-          analytics: widget.analytics,
-        ),
+        body: isDesktop
+            ? DesktopFacultyAnalyticsScreen(
+                title: widget.title,
+                que: widget.que,
+                analytics: widget.analytics,
+              )
+            : FacultyAnalyticsScreen(
+                title: widget.title,
+                que: widget.que,
+                analytics: widget.analytics,
+              ),
       ),
     );
   }

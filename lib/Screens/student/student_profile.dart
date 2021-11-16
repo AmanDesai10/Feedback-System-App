@@ -170,12 +170,10 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class TitleText extends StatelessWidget {
-  const TitleText({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
+  const TitleText({Key? key, required this.text, this.textAlign})
+      : super(key: key);
   final String text;
-
+  final TextAlign? textAlign;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -184,6 +182,7 @@ class TitleText extends StatelessWidget {
       text,
       style: theme.textTheme.headline6!
           .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+      textAlign: textAlign,
     );
   }
 }
