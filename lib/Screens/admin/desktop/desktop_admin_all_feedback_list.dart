@@ -1182,12 +1182,14 @@ class _DesktopAdminAllFeedbackListState
                                                                               .questionTemplateId]!,
                                                                   isCourse:
                                                                       false,
-                                                                ))).then(
-                                                        (value) {
-                                                      setState(() {
-                                                        reload = true;
-                                                      });
-                                                    });
+                                                                  callback:
+                                                                      (value) {
+                                                                    reload =
+                                                                        value;
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                )));
                                                   },
                                                   child: Container(
                                                     padding:
@@ -1341,13 +1343,14 @@ class _DesktopAdminAllFeedbackListState
                                                                               .questionTemplateId]!,
                                                                   isCourse:
                                                                       true,
-                                                                ))).then(
-                                                        (value) {
-                                                      setState(() {
-                                                        reload = true;
-                                                      });
-                                                    });
-                                                    ;
+                                                                  callback:
+                                                                      (value) {
+                                                                    reload =
+                                                                        value;
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                )));
                                                   },
                                                   child: Container(
                                                     padding:

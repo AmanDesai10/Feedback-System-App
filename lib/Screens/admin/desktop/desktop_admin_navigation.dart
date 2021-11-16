@@ -45,15 +45,9 @@ class _DesktopAdminNavigationState extends State<DesktopAdminNavigation> {
     List pages = [
       DesktopAdminAllFeedbackList(),
       AdminQuestionTemplateList(),
-      AdminAddFeedback(),
       ProfilePage()
     ];
-    List pageTitle = [
-      'Feedbacks',
-      'Question template',
-      'Add Feedback',
-      'Profile'
-    ];
+    List pageTitle = ['Feedbacks', 'Question template', 'Profile'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -76,10 +70,8 @@ class _DesktopAdminNavigationState extends State<DesktopAdminNavigation> {
                         0, isFullScreen),
                     buildsideCard(theme, Icons.format_list_bulleted_outlined,
                         pageTitle[1], 1, isFullScreen),
-                    buildsideCard(
-                        theme, Icons.add, pageTitle[2], 2, isFullScreen),
-                    buildsideCard(theme, Icons.person_outline, pageTitle[3], 3,
-                        isFullScreen)
+                    buildsideCard(theme, Icons.person_outline, pageTitle[2], 2,
+                        isFullScreen),
                   ],
                 ),
               ),

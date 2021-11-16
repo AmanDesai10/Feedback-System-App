@@ -12,14 +12,18 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+typedef BoolValue = void Function(bool);
+
 class AdminFeedbackDetails extends StatefulWidget {
   final FeedbackDetails data;
   final String templateName;
+  final BoolValue callback;
   final bool isCourse;
   const AdminFeedbackDetails(
       {Key? key,
       required this.data,
       required this.templateName,
+      required this.callback,
       required this.isCourse})
       : super(key: key);
 
@@ -87,6 +91,7 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
                     setState(() {
                       load = false;
                     });
+                    widget.callback(true);
                     Navigator.pop(context);
 
                     if (response.statusCode == 200) {
@@ -299,13 +304,9 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
                   setState(() {
                     load = false;
                   });
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  widget.callback(true);
+                  Navigator.of(context);
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AdminAllFeedbackList()));
                   if (response.statusCode == 200) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content:
