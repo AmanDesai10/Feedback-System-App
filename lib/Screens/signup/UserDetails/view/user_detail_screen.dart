@@ -66,12 +66,23 @@ class _CategorySelectionState extends State<CategorySelection> {
                                 _instituteData.categoryList.length,
                                 (index) => GestureDetector(
                                   onTap: () {
-                                    if (selectedIndex == index) {
-                                      selectedIndex = -1;
-                                      setState(() {});
+                                    if (index == 2) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Contact Administration to register for Admin')));
+                                    } else if (index == 3) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text('Comming Soon')));
                                     } else {
-                                      selectedIndex = index;
-                                      setState(() {});
+                                      if (selectedIndex == index) {
+                                        selectedIndex = -1;
+                                        setState(() {});
+                                      } else {
+                                        selectedIndex = index;
+                                        setState(() {});
+                                      }
                                     }
                                   },
                                   child: Container(
