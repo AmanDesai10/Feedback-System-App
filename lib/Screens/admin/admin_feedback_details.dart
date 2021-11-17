@@ -290,22 +290,23 @@ class _AdminFeedbackDetailsState extends State<AdminFeedbackDetails> {
               ),
               GestureDetector(
                 onTap: () async {
+                  String url = widget.isCourse
+                      ? "https://sgp-feedback-system.herokuapp.com/api/courseFeedback?id=${widget.data.id}"
+                      : "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}";
                   setState(() {
                     load = true;
                   });
                   SharedPreferences preferences =
                       await SharedPreferences.getInstance();
                   String? token = preferences.getString('token');
-                  var response = await http.delete(
-                      Uri.parse(
-                          "https://sgp-feedback-system.herokuapp.com/api/feedback?id=${widget.data.id}"),
+                  var response = await http.delete(Uri.parse(url),
                       headers: {'Authorization': 'Bearer $token'});
                   log(response.statusCode.toString());
                   setState(() {
                     load = false;
                   });
                   widget.callback(true);
-                  Navigator.of(context);
+                  Navigator.pop(context);
 
                   if (response.statusCode == 200) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

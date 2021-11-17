@@ -340,7 +340,7 @@ class _AdminAllFeedbackListState extends State<AdminAllFeedbackList>
                                                                   coursefeedbackData[
                                                                           index]
                                                                       .questionTemplateId]!,
-                                                              isCourse: false,
+                                                              isCourse: true,
                                                               callback:
                                                                   (value) {
                                                                 reload = value;
