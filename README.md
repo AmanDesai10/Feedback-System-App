@@ -1,6 +1,6 @@
 # feedsys
 
-A new Flutter project.
+Feedback system or Feedsys.
 
 ## Getting Started
 
